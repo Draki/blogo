@@ -1,0 +1,13 @@
+<h2>Post</h2>
+<p>
+<b><%= post.title %></b>
+<br />
+by
+<em>El autor</em>
+</p>
+<p>
+<%= post.updatedAt.toLocaleDateString() %>
+</p>
+<p><%- escapeText(post.body) %></p>
+<a href="/posts/<%= post.id %>/edit"> Edit </a>
+<a href="/posts"> Back </a>
