@@ -10,8 +10,11 @@
 		"ejs": "*",
 		"express-partials": "git://github.com/publicclass/express-partials.git#66f4dc09f0",
 		"sequelize": "git://github.com/sequelize/sequelize.git",
-		"sqlite3": ">=2.0.0",
+		"pg": "0.6.x",
 		"xmlbuilder": "0.4.2"
+	},
+	"devDependencies": {
+		"sqlite3": ">=2.0.0"
 	},
 	"engines": {
 		"node": "0.8.x",
