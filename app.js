@@ -2,16 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express')
-	, routes = require('./routes')
-	, user = require('./routes/user')
-	, http = require('http')
-	, path = require('path')
-	, partials = require('express-partials')
-	, counter = require('./routes/count')
-	, postController = require('./routes/post_controller.js')
-	, util = require('util');
-	
+var express = require('express'), routes = require('./routes'), user = require('./routes/user'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util');
 
 var app = express();
 
@@ -29,8 +20,6 @@ app.configure(function() {
 	app.use(express.methodOverride());
 	app.use(express.cookieParser('your secret here'));
 	app.use(express.session());
-	app.use(express.static(path.join(__dirname, 'public')));
-
 	app.use(require('connect-flash')());
 	app.use(function(req, res, next) {
 		res.locals.flash = function() {
@@ -38,13 +27,14 @@ app.configure(function() {
 		};
 		next();
 	});
+	app.use(express.static(path.join(__dirname, 'public')));
 	app.use(app.router);
-	
+
 	app.use(function(err, req, res, next) {
 		if (util.isError(err)) {
 			next(err);
 		} else {
-			console.log(err); 
+			console.log(err);
 			req.flash('error', err);
 			res.redirect('/');
 		}

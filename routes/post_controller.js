@@ -71,7 +71,7 @@ exports.create = function(req, res, next) {
 		body : req.body.post.body,
 		authorId : 0
 	});
-	var validate_errors = req.post.validate();
+	var validate_errors = post.validate();
 	if (validate_errors) {
 		console.log("Errores de validacion:", validate_errors);
 		req.flash('error', 'Los datos del formulario son incorrectos.');
