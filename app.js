@@ -29,7 +29,6 @@ app.configure(function() {
 	app.use(express.methodOverride());
 	app.use(express.cookieParser('your secret here'));
 	app.use(express.session());
-	app.use(app.router);
 	app.use(express.static(path.join(__dirname, 'public')));
 
 	app.use(require('connect-flash')());
@@ -39,6 +38,7 @@ app.configure(function() {
 		};
 		next();
 	});
+	app.use(app.router);
 	
 	app.use(function(err, req, res, next) {
 		if (util.isError(err)) {

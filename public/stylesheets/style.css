@@ -12,7 +12,14 @@ padding: 7px;
 margin: 20px;
 background-color: #e5f5ff;
 }
-
+.invalid_field {
+padding: 2px;
+background-color: red;
+display: table;
+}
+.field {
+width: 100%;
+}
 #flashinfo {
 width: 450px;
 border: 2px solid blue;
