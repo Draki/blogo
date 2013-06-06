@@ -1,4 +1,5 @@
 var models = require('../models/models.js');
+var crypto = require('crypto');
 /*
  * Auto-loading con app.param
  */
@@ -66,8 +67,6 @@ exports.create = function(req, res, next) {
 		login : req.body.user.login,
 		name : req.body.user.name,
 		email : req.body.user.email,
-		hashed_password : '',
-		salt : ''
 	});
 	// El login debe ser unico:
 	models.User.find({
@@ -98,6 +97,16 @@ exports.create = function(req, res, next) {
 				});
 				return;
 			}
+			// El password no puede estar vacio
+			if (!req.body.user.password) {
+				req.flash('error', 'El campo Password es obligatorio.');
+				res.render('users/new', {
+					user : user
+				});
+				return;
+			}
+			user.salt = createNewSalt();
+			user.hashed_password = encriptarPassword(req.body.user.password, user.salt);
 			user.save().success(function() {
 				req.flash('success', 'Usuario creado con éxito.');
 				res.redirect('/users');
@@ -128,8 +137,15 @@ exports.update = function(req, res, next) {
 		});
 		return;
 	}
-	req.user.save(['name', 'email'])// se guardan solo los campos espècificados
-	.success(function() {
+	var fields_to_update = ['name', 'email'];
+	if (req.body.user.password) {// ¿Cambio el password?
+		console.log('Hay que actualizar el password');
+		req.user.salt = createNewSalt();
+		req.user.hashed_password = encriptarPassword(req.body.user.password, req.user.salt);
+		fields_to_update.push('salt');
+		fields_to_update.push('hashed_password');
+	}
+	req.user.save(fields_to_update).success(function() {
 		req.flash('success', 'Usuario actualizado con éxito.');
 		res.redirect('/users');
 	}).error(function(error) {
@@ -145,4 +161,35 @@ exports.destroy = function(req, res, next) {
 	}).error(function(error) {
 		next(error);
 	});
-}; 
+};
+
+function createNewSalt() {
+	return Math.round((new Date().valueOf() * Math.random())) + '';
+};
+function encriptarPassword(password, salt) {
+	return crypto.createHmac('sha1', salt).update(password).digest('hex');
+};
+exports.autenticar = function(login, password, callback) {
+	models.User.find({
+		where : {
+			login : login
+		}
+	}).success(function(user) {
+		if (user) {
+			if (user.hashed_password == "" && password == "") {
+				callback(null, user);
+				return;
+			}
+			var hash = encriptarPassword(password, user.salt);
+			if (hash == user.hashed_password) {
+				callback(null, user);
+			} else {
+				callback('Password erróneo.');
+			};
+		} else {
+			callback('No existe ningún usuario registrado con ese login.');
+		}
+	}).error(function(err) {
+		callback(err);
+	});
+};

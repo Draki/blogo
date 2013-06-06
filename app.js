@@ -2,12 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express'), 
-routes = require('./routes'), 
-http = require('http'), path = require('path'), partials = require('express-partials'), 
-counter = require('./routes/count'), postController = require('./routes/post_controller.js'), 
-util = require('util'), userController = require('./routes/user_controller.js');
-
+var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js');
 
 var app = express();
 
@@ -68,13 +63,13 @@ app.param('postid', postController.load);
 app.get('/', routes.index);
 
 app.get('/posts.:format?', postController.index);
-app.get('/posts/new', postController.new);
+app.get('/posts/new', sessionController.requiresLogin, postController.new);
 app.get('/posts/:postid([0-9]+).:format?', postController.show);
-app.post('/posts', postController.create);
-app.get('/posts/:postid([0-9]+)/edit', postController.edit);
-app.put('/posts/:postid([0-9]+)', postController.update);
+app.post('/posts', sessionController.requiresLogin, postController.create);
+app.get('/posts/:postid([0-9]+)/edit', sessionController.requiresLogin, postController.edit);
+app.put('/posts/:postid([0-9]+)', sessionController.requiresLogin, postController.update);
 app.
-delete ('/posts/:postid([0-9]+)', postController.destroy);
+delete ('/posts/:postid([0-9]+)', sessionController.requiresLogin, postController.destroy);
 app.get('/posts/search', postController.search);
 
 app.param('userid', userController.load);
@@ -82,11 +77,26 @@ app.get('/users', userController.index);
 app.get('/users/new', userController.new);
 app.get('/users/:userid([0-9]+)', userController.show);
 app.post('/users', userController.create);
-app.get('/users/:userid([0-9]+)/edit', userController.edit);
-app.put('/users/:userid([0-9]+)', userController.update);
-app.delete('/users/:userid([0-9]+)', userController.destroy);
+app.get('/users/:userid([0-9]+)/edit', sessionController.requiresLogin, userController.edit);
+app.put('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.update);
+app.
+delete ('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.destroy);
 
+app.get('/login', sessionController.new);
+app.post('/login', sessionController.create);
+app.get('/logout', sessionController.destroy);
 
 http.createServer(app).listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));
 });
+
+// Helper dinamico:
+app.use(function(req, res, next) {
+	// Hacer visible req.flash() en las vistas
+	res.locals.flash = function() {
+		return req.flash()
+	};
+	// Hacer visible req.session en las vistas
+	res.locals.session = req.session;
+	next();
+}); 
