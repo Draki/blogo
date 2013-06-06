@@ -66,14 +66,6 @@ app.param('postid', postController.load);
 
 // Routes
 app.get('/', routes.index);
-app.param('userid', userController.load);
-app.get('/users', userController.index);
-app.get('/users/new', userController.new);
-app.get('/users/:userid([0-9]+)', userController.show);
-app.post('/users', userController.create);
-app.get('/users/:userid([0-9]+)/edit', userController.edit);
-app.put('/users/:userid([0-9]+)', userController.update);
-app.delete('/users/:userid([0-9]+)', userController.destroy);
 
 app.get('/posts.:format?', postController.index);
 app.get('/posts/new', postController.new);
@@ -84,6 +76,16 @@ app.put('/posts/:postid([0-9]+)', postController.update);
 app.
 delete ('/posts/:postid([0-9]+)', postController.destroy);
 app.get('/posts/search', postController.search);
+
+app.param('userid', userController.load);
+app.get('/users', userController.index);
+app.get('/users/new', userController.new);
+app.get('/users/:userid([0-9]+)', userController.show);
+app.post('/users', userController.create);
+app.get('/users/:userid([0-9]+)/edit', userController.edit);
+app.put('/users/:userid([0-9]+)', userController.update);
+app.delete('/users/:userid([0-9]+)', userController.destroy);
+
 
 http.createServer(app).listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));
