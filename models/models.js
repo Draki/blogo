@@ -18,6 +18,6 @@ var sequelize = new Sequelize(
 // - User desde user.js.
 // Y que este modulo exporte los modelos:
 exports.Post = sequelize.import(path.join(__dirname, 'post'));
-exports.User = sequelize.import(path.join(__dirname, 'user'));
+exports.User = sequelize.import(path.join(__dirname, 'user')); 
 sequelize.sync();
 // Sincroniza BD con la definición del modelo
