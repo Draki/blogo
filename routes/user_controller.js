@@ -44,7 +44,7 @@ exports.show = function(req, res, next) {
 };
 // GET /users/new
 exports.new = function(req, res, next) {
-	var user = model.User.build({
+	var user = models.User.build({
 		login : 'Tu login',
 		name : 'Tu nombre',
 		email : 'Tu email'
