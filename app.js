@@ -2,7 +2,12 @@
  * Module dependencies.
  */
 
-var express = require('express'), routes = require('./routes'), user = require('./routes/user'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util');
+var express = require('express'), 
+routes = require('./routes'), 
+http = require('http'), path = require('path'), partials = require('express-partials'), 
+counter = require('./routes/count'), postController = require('./routes/post_controller.js'), 
+util = require('util'), userController = require('./routes/user_controller.js');
+
 
 var app = express();
 
@@ -58,9 +63,17 @@ app.locals.escapeText = function(text) {
 
 // Autoload
 app.param('postid', postController.load);
+
 // Routes
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.param('userid', userController.load);
+app.get('/users', userController.index);
+app.get('/users/new', userController.new);
+app.get('/users/:userid([0-9]+)', userController.show);
+app.post('/users', userController.create);
+app.get('/users/:userid([0-9]+)/edit', userController.edit);
+app.put('/users/:userid([0-9]+)', userController.update);
+app.delete('/users/:userid([0-9]+)', userController.destroy);
 
 app.get('/posts.:format?', postController.index);
 app.get('/posts/new', postController.new);
