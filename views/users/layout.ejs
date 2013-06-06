@@ -54,20 +54,20 @@
 				</article>
 				<% } %>
 			</section>
-		<nav>
-<a href="/">Home</a>
-<a href="/posts">Posts</a>
-<a href="/users">Usuarios</a>
-<div id='logininfo'>
-<% if (session.user) { %>
-<%= session.user.name %>
-<a href='/logout'> Logout </a>
-<% } else { %>
-<a href='/login?redir=/posts'> Login </a>
-<a href='/users/new'> Register </a>
-<% } %>
-</div>
-</nav>
+			<nav>
+				<a href="/">Home</a>
+				<a href="/posts">Posts</a>
+				<a href="/users">Usuarios</a>
+				<div id='logininfo'>
+					<% if (session.user) { %>
+					<%= session.user.name %>
+					<a href='/logout'> Logout </a>
+					<% } else { %>
+					<a href='/login?redir=/posts'> Login </a>
+					<a href='/users/new'> Register </a>
+					<% } %>
+				</div>
+			</nav>
 
 		</header>
 		<hr />
@@ -76,7 +76,7 @@
 		</div>
 		<hr />
 
-				<footer>
+		<footer>
 			<a href="/">Home</a>
 			Curso 2012-2013
 		</footer>
