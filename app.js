@@ -2,7 +2,16 @@
  * Module dependencies.
  */
 
-var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js');
+var express = require('express')
+	, routes = require('./routes')
+	, http = require('http')
+	, path = require('path')
+	, partials = require('express-partials')
+	, counter = require('./routes/count')
+	, postController = require('./routes/post_controller.js')
+	, util = require('util')
+	, userController = require('./routes/user_controller.js')
+	, sessionController = require('./routes/session_controller.js');
 
 var app = express();
 

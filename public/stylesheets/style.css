@@ -86,3 +86,7 @@ color: #fff;
 font-size: 12px;
 list-style: square;
 }
+#logininfo {
+float: right;
+clear: both;
+}
