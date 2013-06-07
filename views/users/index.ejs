@@ -16,8 +16,6 @@
 				<td> <%= users[i].name %> </td>
 				<td> <%= users[i].email %> </td>
 				<td>
-					<a href="/users/<%= users[i].id %>"> Ver </a>
-					<a href="/users/<%= users[i].id %>/edit"> Editar </a>
 				<form method="post" action="/users/<%= users[i].id %>">
 					<input type="hidden" name="_method" value="delete">
 					<a href="/users/<%= users[i].id %>"> Ver </a>
