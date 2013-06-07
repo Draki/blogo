@@ -5,9 +5,6 @@
 		<% if ( ! user.id) { %>
 		if (!pw1 || !pw2) {
 			alert('Debe rellenar los campos de Password y Confirmación.');
-
-			req.flash('error', 'Los datos del formulario son incorrectos.');
-			req.flash('error', 'Debe rellenar los campos de Password y Confirmación.');
 			return false;
 		}
 		<% } %>
@@ -15,9 +12,6 @@
 			return true;
 		} else {
 			alert('Los passwords introducidos no coinciden.');
-
-			req.flash('error', 'Los datos del formulario son incorrectos.');
-			req.flash('error', 'Los passwords introducidos no coinciden.');
 			return false;
 		}
 	}
