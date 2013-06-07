@@ -134,48 +134,52 @@ exports.update = function(req, res, next) {
 	req.user.name = req.body.user.name;
 	req.user.email = req.body.user.email;
 	req.user.old_password = req.body.user.old_password;
-	require('./user_controller').autenticar(req.session.user.login, req.user.old_password, function(error, user) {
-		if (error) {
-			if (util.isError(error)) {
-				next(error);
-			} else {
-				req.flash('error', 'Se ha producido un error: ' + error);
-				res.render('users/edit', {
-					user : req.user,
-					visitas : counter.getCount()
-				});
+
+	var validate_errors = req.user.validate();
+	if (validate_errors) {
+		console.log("Errores de validación:", validate_errors);
+		req.flash('error', 'Los datos del formulario son incorrectos.');
+		for (var err in validate_errors) {
+			req.flash('error', validate_errors[err]);
+		};
+		res.render('users/edit', {
+			user : req.user,
+			validate_errors : validate_errors,
+			visitas : counter.getCount()
+		});
+		return;
+	}
+	var fields_to_update = ['name', 'email'];
+	if (req.body.user.password) {// ¿Cambio el password?
+		console.log('Hay que actualizar el password');
+		require('./user_controller').autenticar(req.session.user.login, req.user.old_password, function(error, user) {
+			if (error) {
+				if (util.isError(error)) {
+					next(error);
+				} else {
+					req.flash('error', 'Se ha producido un error: ' + error);
+					res.render('users/edit', {
+						user : req.user,
+						visitas : counter.getCount()
+					});
+				}
+				return;
 			}
-			return;
-		}
-		var validate_errors = req.user.validate();
-		if (validate_errors) {
-			console.log("Errores de validación:", validate_errors);
-			req.flash('error', 'Los datos del formulario son incorrectos.');
-			for (var err in validate_errors) {
-				req.flash('error', validate_errors[err]);
-			};
-			res.render('users/edit', {
-				user : req.user,
-				validate_errors : validate_errors,
-				visitas : counter.getCount()
-			});
-			return;
-		}
-		var fields_to_update = ['name', 'email'];
-		if (req.body.user.password) {// ¿Cambio el password?
-			console.log('Hay que actualizar el password');
+
 			req.user.salt = createNewSalt();
 			req.user.hashed_password = encriptarPassword(req.body.user.password, req.user.salt);
 			fields_to_update.push('salt');
 			fields_to_update.push('hashed_password');
-		}
-		req.user.save(fields_to_update).success(function() {
-			req.flash('success', 'Usuario actualizado con éxito.');
-			res.redirect('/users');
-		}).error(function(error) {
-			next(error);
 		});
+	}
+	req.user.save(fields_to_update).success(function() {
+		req.session.user.name = req.user.name;
+		req.flash('success', 'Usuario actualizado con éxito.');
+		res.redirect('/users');
+	}).error(function(error) {
+		next(error);
 	});
+
 };
 
 // DELETE /users/33

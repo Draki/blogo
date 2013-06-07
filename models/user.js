@@ -1,6 +1,6 @@
 // Definicion de la clase User:
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('User', {
+	return sequelize.define("User", {
 		login : {
 			type : DataTypes.STRING,
 			validate : {

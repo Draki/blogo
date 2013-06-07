@@ -18,7 +18,7 @@
 			<section>
 				<% var flash = flash() %>
 				<% if (flash.info) { %>
-				<article id='flashinfo'>
+				<article id="flashinfo">
 					<h3>Información de interés:</h3>
 					<ul>
 						<% for (var i in flash.info) { %>
@@ -30,7 +30,7 @@
 				</article>
 				<% } %>
 				<% if (flash.success) { %>
-				<article id='flashsuccess'>
+				<article id="flashsuccess">
 					<h3>Tareas completadas con éxito:</h3>
 					<ul>
 						<% for (var i in flash.success) { %>
@@ -42,7 +42,7 @@
 				</article>
 				<% } %>
 				<% if (flash.error) { %>
-				<article id='flasherror'>
+				<article id="flasherror">
 					<h3>Errores encontrados:</h3>
 					<ul>
 						<% for (var i in flash.error) { %>
@@ -58,13 +58,13 @@
 				<a href="/">Home</a>
 				<a href="/posts">Posts</a>
 				<a href="/users">Usuarios</a>
-				<div id='logininfo'>
+				<div id="logininfo">
 					<% if (session.user) { %>
 					<%= session.user.name %>
-					<a href='/logout'> Logout </a>
+					<a href="/logout"> Logout </a>
 					<% } else { %>
-					<a href='/login?redir=/posts'> Login </a>
-					<a href='/users/new'> Register </a>
+					<a href="/login?redir=/posts"> Login </a>
+					<a href="/users/new"> Register </a>
 					<% } %>
 				</div>
 			</nav>

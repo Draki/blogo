@@ -1,72 +1,72 @@
 <script>
 	function confirmPassword() {
-		var pw1 = document.all['user_password'].value;
-		var pw2 = document.all['user_confirm_password'].value;
+		var pw1 = document.all["user_password"].value;
+		var pw2 = document.all["user_confirm_password"].value;
 
 		<% if ( ! user.id) { %>
 		if (!pw1 || !pw2) {
-			alert('Debe rellenar los campos de Password y Confirmación.');
+			alert("Debe rellenar los campos de Password y Confirmación.");
 			return false;
 		}
 		<% } %>
 		if (pw1 == pw2) {
 			return true;
 		} else {
-			alert('Los passwords introducidos no coinciden.');
+			alert("Los passwords introducidos no coinciden.");
 			return false;
 		}
 	}
 </script>
 
-<div class='<%- locals.validate_errors && validate_errors.login
-? "invalid_field" : "field" %>'>
+<div class="<%- locals.validate_errors && validate_errors.login
+? "invalid_field" : "field" %>">
 	<% if ( ! user.id) { %>
 	<label for="user_login">Login:</label>
 	<br />
 	<input type="text" id="user_login" name="user[login]"
-	size="30" value='<%= user.login %>' />
+	size="30" value="<%= user.login %>" />
 	<% } else { %>
 	Login: <%= user.login %>
 	<% } %>
 </div>
-<div class='<%- locals.validate_errors && validate_errors.name
-? "invalid_field" : "field" %>'>
+<div class="<%- locals.validate_errors && validate_errors.name
+? "invalid_field" : "field" %>">
 	<label for="user_name">Nombre</label>
 	<br />
 	<input type="text" id="user_name" name="user[name]" size="30"
-	value='<%= user.name %>' />
+	value="<%= user.name %>" />
 </div>
-<div class='<%- locals.validate_errors && validate_errors.email
-? "invalid_field" : "field" %>'>
+<div class="<%- locals.validate_errors && validate_errors.email
+? "invalid_field" : "field" %>">
 	<label for="user_email">Email</label>
 	<br />
 	<input type="text" id="user_email" name="user[email]" size="30"
-	value='<%= user.email %>' />
+	value="<%= user.email %>" />
 </div>
 <% if (user.id) { %>
-<div class='<%- locals.validate_errors && validate_errors.old_password
-? "invalid_field" : "field" %>'>
+<div class="<%- locals.validate_errors && validate_errors.old_password
+? "invalid_field" : "field" %>">
 	<label for="user_old_password">Antiguo password:</label>
 	<br />
 	<input type="password" id="user_old_password"
-	name="user[old_password]" size="30" value='' />
+	name="user[old_password]" size="30" value="" />
 </div>
 <% } %>
-<div class='<%- locals.validate_errors && validate_errors.password
-? "invalid_field" : "field" %>'>
+<div class="<%- locals.validate_errors && validate_errors.password
+? "invalid_field" : "field" %>">
 	<label for="user_password">Password:</label>
 	<br />
 	<input type="password" id="user_password"
-	name="user[password]" size="30" value='' />
+	name="user[password]" size="30" value="" />
 </div>
-<div class='<%- locals.validate_errors && validate_errors.password
-? "invalid_field" : "field" %>'>
+<div class="<%- locals.validate_errors && validate_errors.password
+? "invalid_field" : "field" %>">
 	<label for="user_confirm_password">Confirm Password:</label>
 	<br />
-	<input type="password" id="user_confirm_password" size="30" value='' />
+	<input type="password" id="user_confirm_password" size="30" value="" />
 </div>
 <div class="actions">
-	<button type='submit' onclick='return confirmPassword()'>
+	<button type="submit" onclick="return confirmPassword()">
 		Salvar
 	</button>
 </div>
