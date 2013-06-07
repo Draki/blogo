@@ -1,6 +1,7 @@
 var models = require('../models/models.js');
 var crypto = require('crypto');
 var counter = require('./count');
+var util = require('util');
 
 /*
  * Auto-loading con app.param
