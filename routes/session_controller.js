@@ -1,4 +1,5 @@
 var util = require('util');
+var counter = require('./count');
 
 // Formulario para hacer login
 //
@@ -10,7 +11,8 @@ var util = require('util');
 //
 exports.new = function(req, res) {
 	res.render('session/new', {
-		redir : req.query.redir || '/'
+		redir : req.query.redir || '/',
+		visitas : counter.getCount()
 	});
 };
 

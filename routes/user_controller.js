@@ -1,5 +1,7 @@
 var models = require('../models/models.js');
 var crypto = require('crypto');
+var counter = require('./count');
+
 /*
  * Auto-loading con app.param
  */
@@ -30,7 +32,8 @@ exports.index = function(req, res, next) {
 		order : 'name'
 	}).success(function(users) {
 		res.render('users/index', {
-			users : users
+			users : users,
+		visitas : counter.getCount()
 		});
 	}).error(function(error) {
 		next(error);
@@ -40,7 +43,8 @@ exports.index = function(req, res, next) {
 // GET /users/33
 exports.show = function(req, res, next) {
 	res.render('users/show', {
-		user : req.user
+		user : req.user,
+		visitas : counter.getCount()
 	});
 };
 // GET /users/new
@@ -51,13 +55,15 @@ exports.new = function(req, res, next) {
 		email : 'Tu email'
 	});
 	res.render('users/new', {
-		user : user
+		user : user,
+		visitas : counter.getCount()
 	});
 };
 // GET /users/33/edit
 exports.edit = function(req, res, next) {
 	res.render('users/edit', {
-		user : req.user
+		user : req.user,
+		visitas : counter.getCount()
 	});
 };
 
@@ -81,7 +87,8 @@ exports.create = function(req, res, next) {
 				user : user,
 				validate_errors : {
 					login : 'El usuario \"' + req.body.user.login + '\" ya existe.'
-				}
+				},
+		visitas : counter.getCount()
 			});
 			return;
 		} else {
@@ -93,14 +100,15 @@ exports.create = function(req, res, next) {
 				};
 				res.render('users/new', {
 					user : user,
-					validate_errors : validate_errors
+					validate_errors : validate_errors,
+		visitas : counter.getCount()
 				});
 				return;
 			}
 			// El password no puede estar vacio
 			if (!req.body.user.password) {
 				req.flash('error', 'El campo Password es obligatorio.');
-				res.render('users/new', {
+				('users/new', {
 					user : user
 				});
 				return;
@@ -133,7 +141,8 @@ exports.update = function(req, res, next) {
 		};
 		res.render('users/edit', {
 			user : req.user,
-			validate_errors : validate_errors
+			validate_errors : validate_errors,
+		visitas : counter.getCount()
 		});
 		return;
 	}

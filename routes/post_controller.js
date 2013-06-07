@@ -1,4 +1,5 @@
 var models = require('../models/models.js');
+var counter = require('./count');
 
 exports.load = function(req, res, next, id) {
 	models.Post.find({
@@ -29,7 +30,8 @@ exports.index = function(req, res, next) {
 			case 'html':
 			case 'htm':
 				res.render('posts/index', {
-					posts : posts
+					posts : posts,
+		visitas : counter.getCount()
 				});
 				break;
 			case 'json':
@@ -50,7 +52,8 @@ exports.index = function(req, res, next) {
 // GET /posts/33
 exports.show = function(req, res, next) {
 	res.render('posts/show', {
-		post : req.post
+		post : req.post,
+		visitas : counter.getCount()
 	});
 };
 
@@ -60,7 +63,8 @@ exports.new = function(req, res, next) {
 		body : 'Introduzca el texto del articulo'
 	});
 	res.render('posts/new', {
-		post : post
+		post : post,
+		visitas : counter.getCount()
 	});
 };
 
@@ -80,7 +84,8 @@ exports.create = function(req, res, next) {
 		};
 		res.render('posts/new', {
 			post : post,
-			validate_errors : validate_errors
+			validate_errors : validate_errors,
+		visitas : counter.getCount()
 		});
 		return;
 	}
@@ -94,7 +99,8 @@ exports.create = function(req, res, next) {
 // GET /posts/33/edit
 exports.edit = function(req, res, next) {
 	res.render('posts/edit', {
-		post : req.post
+		post : req.post,
+		visitas : counter.getCount()
 	});
 };
 
@@ -110,7 +116,8 @@ exports.update = function(req, res, next) {
 			req.flash('error', validate_errors[err]);
 		};
 		res.render('posts/edit', {post: req.post,
-		validate_errors:validate_errors
+		validate_errors:validate_errors,
+		visitas : counter.getCount()
 	});
 	return;
 }
@@ -171,7 +178,8 @@ exports.search = function(req, res, next) {
 			case 'htm':
 				res.render('posts/search', {
 					posts : posts,
-					busqueda : busqueda
+					busqueda : busqueda,
+		visitas : counter.getCount()
 				});
 				break;
 			case 'json':
