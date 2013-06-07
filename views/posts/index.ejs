@@ -13,7 +13,7 @@
 			<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
 		<form method="post" action="/posts/<%= posts[i].id %>">
 			<input type="hidden" name="_method" value="delete">
-            <a href="" onclick="console.log(posts[i]);submit();return false" class="btn btn-danger"> Borrar </a> 
+			<a value='delete' href="/posts/<%= posts[i].id %>" class="btn btn-danger"> Borrar </a> 
 		</form>
 	</footer>
 </article>
