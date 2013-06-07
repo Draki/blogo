@@ -31,7 +31,7 @@ exports.index = function(req, res, next) {
 			case 'htm':
 				res.render('posts/index', {
 					posts : posts,
-		visitas : counter.getCount()
+					visitas : counter.getCount()
 				});
 				break;
 			case 'json':
@@ -85,7 +85,7 @@ exports.create = function(req, res, next) {
 		res.render('posts/new', {
 			post : post,
 			validate_errors : validate_errors,
-		visitas : counter.getCount()
+			visitas : counter.getCount()
 		});
 		return;
 	}
@@ -115,17 +115,18 @@ exports.update = function(req, res, next) {
 		for (var err in validate_errors) {
 			req.flash('error', validate_errors[err]);
 		};
-		res.render('posts/edit', {post: req.post,
-		validate_errors:validate_errors,
-		visitas : counter.getCount()
+		res.render('posts/edit', {
+			post : req.post,
+			validate_errors : validate_errors,
+			visitas : counter.getCount()
+		});
+		return;
+	}
+	req.post.save(['title', 'body']).success(function() {
+		res.redirect('/posts');
+	}).error(function(error) {
+		next(error);
 	});
-	return;
-}
-req.post.save(['title', 'body']).success(function() {
-	res.redirect('/posts');
-}).error(function(error) {
-	next(error);
-});
 };
 
 // DELETE /posts/33
@@ -179,7 +180,7 @@ exports.search = function(req, res, next) {
 				res.render('posts/search', {
 					posts : posts,
 					busqueda : busqueda,
-		visitas : counter.getCount()
+					visitas : counter.getCount()
 				});
 				break;
 			case 'json':

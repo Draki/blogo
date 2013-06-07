@@ -51,17 +51,15 @@ exports.create = function(req, res) {
 	});
 };
 
-
 // Logout
 //
 // Para salir de la session simplemente destruyo req.session.user
 //
 exports.destroy = function(req, res) {
-delete req.session.user;
-req.flash('success', 'Logout.');
-res.redirect("/login");
+	delete req.session.user;
+	req.flash('success', 'Logout.');
+	res.redirect("/login");
 };
-
 
 // Middleware que obliga a autenticarse
 //
@@ -72,12 +70,11 @@ res.redirect("/login");
 // redirecciono a pantalla de login.
 // -> Guarda en query el url para volver automaticamente
 // a esa url despues de hacer login.
-exports.requiresLogin = function (req, res, next) {
-if (req.session.user) {
-next();
-} else {
-res.redirect('/login?redir=' + req.url);
-}
+exports.requiresLogin = function(req, res, next) {
+	if (req.session.user) {
+		next();
+	} else {
+		res.redirect('/login?redir=' + req.url);
+	}
 };
-
 

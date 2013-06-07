@@ -33,7 +33,7 @@ exports.index = function(req, res, next) {
 	}).success(function(users) {
 		res.render('users/index', {
 			users : users,
-		visitas : counter.getCount()
+			visitas : counter.getCount()
 		});
 	}).error(function(error) {
 		next(error);
@@ -88,7 +88,7 @@ exports.create = function(req, res, next) {
 				validate_errors : {
 					login : 'El usuario \"' + req.body.user.login + '\" ya existe.'
 				},
-		visitas : counter.getCount()
+				visitas : counter.getCount()
 			});
 			return;
 		} else {
@@ -101,14 +101,14 @@ exports.create = function(req, res, next) {
 				res.render('users/new', {
 					user : user,
 					validate_errors : validate_errors,
-		visitas : counter.getCount()
+					visitas : counter.getCount()
 				});
 				return;
 			}
 			// El password no puede estar vacio
 			if (!req.body.user.password) {
 				req.flash('error', 'El campo Password es obligatorio.');
-				('users/new', {
+				res.render('users/new', {
 					user : user
 				});
 				return;
@@ -142,7 +142,7 @@ exports.update = function(req, res, next) {
 		res.render('users/edit', {
 			user : req.user,
 			validate_errors : validate_errors,
-		visitas : counter.getCount()
+			visitas : counter.getCount()
 		});
 		return;
 	}
@@ -202,3 +202,4 @@ exports.autenticar = function(login, password, callback) {
 		callback(err);
 	});
 };
+
