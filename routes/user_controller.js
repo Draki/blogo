@@ -133,7 +133,7 @@ exports.update = function(req, res, next) {
 	req.user.name = req.body.user.name;
 	req.user.email = req.body.user.email;
 	req.user.old_password = req.body.user.old_password;
-	autenticar(req.user.login, req.user.old_password, function(error, user) {
+	require('./user_controller').autenticar(req.user.login, req.user.old_password, function(error, user) {
 		if (error) {
 			if (util.isError(error)) {
 				next(error);
