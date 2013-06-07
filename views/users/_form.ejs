@@ -2,6 +2,7 @@
 	function confirmPassword() {
 		var pw1 = document.all['user_password'].value;
 		var pw2 = document.all['user_confirm_password'].value;
+
 		<% if ( ! user.id) { %>
 		if (!pw1 || !pw2) {
 			alert('Debe rellenar los campos de Password y Confirmación.');
@@ -56,7 +57,7 @@
 	<input type="password" id="user_confirm_password" size="30" value='' />
 </div>
 <div class="actions">
-	<input name="commit" type="submit" value="Salvar"
-	onclick='return confirmPassword()'
-	/>
+	<button type='submit' onclick='return confirmPassword()'>
+		Salvar
+	</button>
 </div>
