@@ -131,11 +131,16 @@ exports.update = function(req, res, next) {
 
 // DELETE /posts/33
 exports.destroy = function(req, res, next) {
+	console.log("ENTRANDO UNO!");
 	req.post.destroy().success(function() {
+		console.log("ENTRANDO DOS!");
+		req.flash('success', 'Post eliminado con éxito.');
 		res.redirect("/posts");
 	}).error(function(error) {
+		console.log("ENTRANDO TRES!");
 		next(error);
 	});
+	console.log("ENTRANDO CUATRo!");
 };
 
 function posts_to_xml(posts) {
