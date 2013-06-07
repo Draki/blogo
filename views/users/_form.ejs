@@ -1,20 +1,25 @@
-
 <script>
-		function confirmPassword() {
-	var pw1 = document.all['user_password'].value;
-	var pw2 = document.all['user_confirm_password'].value;
-	<% if ( ! user.id) { %>
-	if (!pw1 || !pw2) {
-	alert('Debe rellenar los campos de Password y Confirmación.');
-	return false;
-	}
-	<% } %>
-	if (pw1 == pw2) {
-	return true;
-	} else {
-	alert('Los passwords introducidos no coinciden.');
-	return false;!!
-	}
+	function confirmPassword() {
+		var pw1 = document.all['user_password'].value;
+		var pw2 = document.all['user_confirm_password'].value;
+		<% if ( ! user.id) { %>
+		if (!pw1 || !pw2) {
+			alert('Debe rellenar los campos de Password y Confirmación.');
+
+			req.flash('error', 'Los datos del formulario son incorrectos.');
+			req.flash('error', 'Debe rellenar los campos de Password y Confirmación.');
+			return false;
+		}
+		<% } %>
+		if (pw1 == pw2) {
+			return true;
+		} else {
+			alert('Los passwords introducidos no coinciden.');
+
+			req.flash('error', 'Los datos del formulario son incorrectos.');
+			req.flash('error', 'Los passwords introducidos no coinciden.');
+			return false;
+		}
 	}
 </script>
 
@@ -43,13 +48,15 @@
 	<input type="text" id="user_email" name="user[email]" size="30"
 	value='<%= user.email %>' />
 </div>
-<div class="field">
+<div class='<%- locals.validate_errors && validate_errors.password
+? "invalid_field" : "field" %>'>
 	<label for="user_password">Password:</label>
 	<br />
 	<input type="password" id="user_password"
 	name="user[password]" size="30" value='' />
 </div>
-<div class="field">
+<div class='<%- locals.validate_errors && validate_errors.password
+? "invalid_field" : "field" %>'>
 	<label for="user_confirm_password">Confirm Password:</label>
 	<br />
 	<input type="password" id="user_confirm_password" size="30" value='' />

@@ -29,12 +29,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		hashed_password : {
-			type : DataTypes.STRING,
-			validate : {
-				notEmpty : {
-					msg : "El campo password no puede estar vacio"
-				}
-			}
+			type : DataTypes.STRING
 		},
 		salt : {
 			type : DataTypes.STRING

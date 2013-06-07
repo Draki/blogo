@@ -73,7 +73,6 @@ exports.create = function(req, res, next) {
 		login : req.body.user.login,
 		name : req.body.user.name,
 		email : req.body.user.email,
-		password : req.body.user.password,
 	});
 	// El login debe ser unico:
 	models.User.find({
@@ -93,14 +92,16 @@ exports.create = function(req, res, next) {
 			});
 			return;
 		} else {
-			user.salt = createNewSalt();
-			user.hashed_password = encriptarPassword(req.body.user.password, user.salt);
 			var validate_errors = user.validate();
+			// El password no puede estar vacio
+			if (!req.body.user.password) {
+					validate_errors.password = 'El campo Password es obligatorio.';
+			};
 			if (validate_errors) {
 				req.flash('error', 'Los datos del formulario son incorrectos.');
 				for (var err in validate_errors) {
 					req.flash('error', validate_errors[err]);
-				};
+				};				
 				res.render('users/new', {
 					user : user,
 					validate_errors : validate_errors,
@@ -108,6 +109,9 @@ exports.create = function(req, res, next) {
 				});
 				return;
 			};
+			
+			user.salt = createNewSalt();
+			user.hashed_password = encriptarPassword(req.body.user.password, user.salt);
 			user.save().success(function() {
 				req.flash('success', 'Usuario creado con éxito.');
 				res.redirect('/users');
