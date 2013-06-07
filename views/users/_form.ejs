@@ -43,6 +43,15 @@
 	<input type="text" id="user_email" name="user[email]" size="30"
 	value='<%= user.email %>' />
 </div>
+<% if (user.id) { %>
+<div class='<%- locals.validate_errors && validate_errors.old_password
+? "invalid_field" : "field" %>'>
+	<label for="user_old_password">Password:</label>
+	<br />
+	<input type="password" id="user_old_password"
+	name="user[old_password]" size="30" value='' />
+</div>
+<% } %>
 <div class='<%- locals.validate_errors && validate_errors.password
 ? "invalid_field" : "field" %>'>
 	<label for="user_password">Password:</label>
