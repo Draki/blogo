@@ -1,10 +1,11 @@
-
 /*
  * GET home page.
  */
 
-var counter = require('./count'); 
+var counter = require('./count');
 
-exports.index = function(req, res){
-  res.render('index', { visitas: counter.getCount() });
-};
+exports.index = function(req, res) {
+	res.render('index', {
+		visitas : counter.getCount()
+	});
+}; 
