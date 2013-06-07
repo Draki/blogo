@@ -95,7 +95,7 @@ exports.create = function(req, res, next) {
 			var validate_errors = user.validate();
 			// El password no puede estar vacio
 			if (!req.body.user.password) {
-					validate_errors.password = 'El campo Password es obligatorio.';
+					validate_errors[password] = 'El campo Password es obligatorio.';
 			};
 			if (validate_errors) {
 				req.flash('error', 'Los datos del formulario son incorrectos.');
