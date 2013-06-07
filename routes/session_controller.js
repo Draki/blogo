@@ -78,3 +78,14 @@ exports.requiresLogin = function(req, res, next) {
 	}
 };
 
+exports.sessionTimeout = function(req, res, next) {
+    if (req.session.user) {
+        if ((req.session.user.tIni + 60000) < Date.now()) {
+            delete req.session.user;
+        } else {
+            req.session.user.tIni = Date.now();
+        }
+    }
+    next();
+};
+

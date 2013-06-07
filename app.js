@@ -20,8 +20,10 @@ app.configure(function() {
 	app.use(express.methodOverride());
 	app.use(express.cookieParser('your secret here'));
 	app.use(express.session());
+	app.use(require('connect-flash')());
+	app.use(sessionController.sessionTimeout);	
+	
 	//Helper dinamico
-
 	app.use(function(req, res, next) {
 		// Hacer visible req.flash() en las vistas
 		res.locals.flash = function() {
@@ -31,13 +33,8 @@ app.configure(function() {
 		res.locals.session = req.session;
 		next();
 	});
-	app.use(require('connect-flash')());
-	app.use(function(req, res, next) {
-		res.locals.flash = function() {
-			return req.flash()
-		};
-		next();
-	});
+
+		
 	app.use(express.static(path.join(__dirname, 'public')));
 	app.use(app.router);
 
