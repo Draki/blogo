@@ -93,6 +93,8 @@ exports.create = function(req, res, next) {
 			});
 			return;
 		} else {
+			user.salt = createNewSalt();
+			user.hashed_password = encriptarPassword(req.body.user.password, user.salt);
 			var validate_errors = user.validate();
 			if (validate_errors) {
 				req.flash('error', 'Los datos del formulario son incorrectos.');
@@ -106,17 +108,6 @@ exports.create = function(req, res, next) {
 				});
 				return;
 			};
-			// El password no puede estar vacio
-			if (!req.body.user.password) {
-				req.flash('error', 'El campo Password es obligatorio.');
-				res.render('users/new', {
-					user : user,
-					visitas : counter.getCount()
-				});
-				return;
-			}
-			user.salt = createNewSalt();
-			user.hashed_password = encriptarPassword(req.body.user.password, user.salt);
 			user.save().success(function() {
 				req.flash('success', 'Usuario creado con éxito.');
 				res.redirect('/users');
