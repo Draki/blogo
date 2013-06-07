@@ -109,7 +109,8 @@ exports.create = function(req, res, next) {
 			if (!req.body.user.password) {
 				req.flash('error', 'El campo Password es obligatorio.');
 				res.render('users/new', {
-					user : user
+					user : user,
+					visitas : counter.getCount()
 				});
 				return;
 			}
