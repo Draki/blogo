@@ -10,10 +10,10 @@
 		<%= posts[i].body.slice(0,300) %> ...
 	</p>
 	<footer>
-			<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
 		<form method="post" action="/posts/<%= posts[i].id %>">
 			<input type="hidden" name="_method" value="delete">
-			<a value='delete' href="/posts/<%= posts[i].id %>" class="btn btn-danger"> Borrar </a> 
+			<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
+			<button type='submit' class='btn btn-success'> Borrar </button>
 		</form>
 	</footer>
 </article>
