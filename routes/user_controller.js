@@ -73,7 +73,7 @@ exports.create = function(req, res, next) {
 		login : req.body.user.login,
 		name : req.body.user.name,
 		email : req.body.user.email,
-		email : req.body.user.password,
+		password : req.body.user.password,
 	});
 	// El login debe ser unico:
 	models.User.find({
