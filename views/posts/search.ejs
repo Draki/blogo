@@ -1,22 +1,20 @@
 <header>
-<h2> Posts que contienen "<%= busqueda %>" </h2>
+	<h2> Posts que contienen "<%= busqueda %>" </h2>
 </header>
 <% for (var i in posts) { %>
 <article>
-<header>
-<h3>
-<a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a>
-</h3>
-</header>
-<p>
-<%= posts[i].body.slice(0,300) %> ...
-</p>
-<footer>
-<form method="post" action="/posts/<%= posts[i].id %>">
-<input type="hidden" name="_method" value="delete">
-<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
-<a href="" onclick="submit();return false"> Borrar </a>
-</form>
-</footer>
+	<header>
+		<h3><a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a></h3>
+	</header>
+	<p>
+		<%= posts[i].body.slice(0,300) %> ...
+	</p>
+	<footer>
+			<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
+		<form method="post" action="/posts/<%= posts[i].id %>">
+			<input type="hidden" name="_method" value="delete">
+			<button type='submit' class='btn btn-success'> Borrar </button>
+		</form>
+	</footer>
 </article>
 <% }; %>

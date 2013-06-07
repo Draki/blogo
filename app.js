@@ -76,8 +76,7 @@ app.get('/posts/:postid([0-9]+).:format?', postController.show);
 app.post('/posts', sessionController.requiresLogin, postController.create);
 app.get('/posts/:postid([0-9]+)/edit', sessionController.requiresLogin, postController.edit);
 app.put('/posts/:postid([0-9]+)', sessionController.requiresLogin, postController.update);
-app.
-delete ('/posts/:postid([0-9]+)', sessionController.requiresLogin, postController.destroy);
+app.delete ('/posts/:postid([0-9]+)', sessionController.requiresLogin, postController.destroy);
 app.get('/posts/search', postController.search);
 
 app.param('userid', userController.load);
@@ -87,8 +86,7 @@ app.get('/users/:userid([0-9]+)', userController.show);
 app.post('/users', userController.create);
 app.get('/users/:userid([0-9]+)/edit', sessionController.requiresLogin, userController.edit);
 app.put('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.update);
-app.
-delete ('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.destroy);
+app.delete ('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.destroy);
 
 app.get('/login', sessionController.new);
 app.post('/login', sessionController.create);
