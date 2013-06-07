@@ -1,3 +1,23 @@
+
+<script>
+		function confirmPassword() {
+	var pw1 = document.all['user_password'].value;
+	var pw2 = document.all['user_confirm_password'].value;
+	<% if ( ! user.id) { %>
+	if (!pw1 || !pw2) {
+	alert('Debe rellenar los campos de Password y Confirmación.');
+	return false;
+	}
+	<% } %>
+	if (pw1 == pw2) {
+	return true;
+	} else {
+	alert('Los passwords introducidos no coinciden.');
+	return false;!!
+	}
+	}
+</script>
+
 <div class='<%- locals.validate_errors && validate_errors.login
 ? "invalid_field" : "field" %>'>
 	<% if ( ! user.id) { %>
@@ -32,28 +52,10 @@
 <div class="field">
 	<label for="user_confirm_password">Confirm Password:</label>
 	<br />
-	<input type="password" id="user_confirm_password" name="user[confirm_password]" size="30" value='' />
+	<input type="password" id="user_confirm_password" size="30" value='' />
 </div>
 <div class="actions">
 	<input name="commit" type="submit" value="Salvar"
 	onclick='return confirmPassword()'
 	/>
 </div>
-<script>
-		function confirmPassword() {
-	var pw1 = document.all['user_password'].value;
-	var pw2 = document.all['user_confirm_password'].value;
-	<% if ( ! user.id) { %>
-	if (!pw1 || !pw2) {
-	alert('Debe rellenar los campos de Password y Confirmación.');
-	return false;
-	}
-	<% } %>
-	if (pw1 == pw2) {
-	return true;
-	} else {
-	alert('Los passwords introducidos no coinciden.');
-	return false;!!
-	}
-	}
-</script>

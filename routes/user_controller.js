@@ -73,8 +73,7 @@ exports.create = function(req, res, next) {
 		login : req.body.user.login,
 		name : req.body.user.name,
 		email : req.body.user.email,
-		password : req.body.user.password,
-		confirm_password : req.body.user.confirm_password
+		email : req.body.user.password,
 	});
 	// El login debe ser unico:
 	models.User.find({
@@ -106,7 +105,7 @@ exports.create = function(req, res, next) {
 					visitas : counter.getCount()
 				});
 				return;
-			}
+			};
 			// El password no puede estar vacio
 			if (!req.body.user.password) {
 				req.flash('error', 'El campo Password es obligatorio.');
