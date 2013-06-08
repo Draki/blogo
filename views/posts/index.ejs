@@ -5,16 +5,21 @@
 <article>
 	<header>
 		<h3><a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a></h3>
+		<em> <%= posts[i].author && posts[i].author.name || 'Sin autor' %> </em>
 	</header>
 	<p>
 		<%= posts[i].body.slice(0,300) %> ...
 	</p>
 	<footer>
+		<% if (session.user && session.user.id == posts[i].authorId) {%>
 		<form method="post" action="/posts/<%= posts[i].id %>">
 			<input type="hidden" name="_method" value="delete">
 			<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
-			<button type='submit' class='btn btn-success'> Borrar </button>
+			<button type='submit' class='btn btn-success'>
+				Borrar
+			</button>
 		</form>
+		<% } %>
 	</footer>
 </article>
 <% }; %>

@@ -24,7 +24,11 @@ exports.index = function(req, res, next) {
 	var format = req.params.format || "html";
 	format = format.toLowerCase();
 	models.Post.findAll({
-		order : "updatedAt DESC"
+		order : "updatedAt DESC",
+		include : [{
+			model : models.User,
+			as : 'Author'
+		}]
 	}).success(function(posts) {
 		switch (format) {
 			case "html":
@@ -51,9 +55,20 @@ exports.index = function(req, res, next) {
 
 // GET /posts/33
 exports.show = function(req, res, next) {
-	res.render("posts/show", {
-		post : req.post,
-		visitas : counter.getCount()
+	models.User.find({
+		where : {
+			id : req.post.authorId
+		}
+	}).success(function(user) {
+		// Si encuentro al autor lo añado como el atributo author,
+		// sino añado {}.
+		req.post.author = user || {};
+		res.render('posts/show', {
+			post : req.post,
+			visitas : counter.getCount()
+		});
+	}).error(function(error) {
+		next(error);
 	});
 };
 
@@ -72,8 +87,8 @@ exports.new = function(req, res, next) {
 exports.create = function(req, res, next) {
 	var post = models.Post.build({
 		title : req.body.post.title,
-		body : req.body.post.body,
-		authorId : 0
+		body : req.body.post.body,    ,
+		authorId : req.session.user.id
 	});
 	var validate_errors = post.validate();
 	if (validate_errors) {
@@ -202,4 +217,16 @@ exports.search = function(req, res, next) {
 		console.log("Error: No puedo listar los posts.");
 		res.redirect("/");
 	});
+};
+
+/*
+ * Comprueba que el usuario logeado es el author.
+ */
+exports.loggedUserIsAuthor = function(req, res, next) {
+	if (req.session.user && req.session.user.id == req.post.authorId) {
+		next();
+	} else {
+		console.log('Prohibida: usuario logeado no es el autor.');
+		res.send(403);
+	}
 };

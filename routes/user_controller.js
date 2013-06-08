@@ -223,3 +223,16 @@ exports.autenticar = function(login, password, callback) {
 	});
 };
 
+/*
+ * Comprueba que el usuario logeado es el usuario al
+ * que se refiere esta ruta.
+ */
+exports.loggedUserIsUser = function(req, res, next) {
+	if (req.session.user && req.session.user.id == req.user.id) {
+		next();
+	} else {
+		console.log('Ruta prohibida: no soy el usuario logeado.');
+		res.send(403);
+	}
+};
+
