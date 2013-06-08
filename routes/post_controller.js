@@ -87,7 +87,7 @@ exports.new = function(req, res, next) {
 exports.create = function(req, res, next) {
 	var post = models.Post.build({
 		title : req.body.post.title,
-		body : req.body.post.body,    ,
+		body : req.body.post.body,
 		authorId : req.session.user.id
 	});
 	var validate_errors = post.validate();
