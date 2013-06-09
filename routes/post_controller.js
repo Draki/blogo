@@ -63,9 +63,44 @@ exports.show = function(req, res, next) {
 		// Si encuentro al autor lo añado como el atributo author,
 		// sino añado {}.
 		req.post.author = user || {};
-		res.render('posts/show', {
-			post : req.post,
-			visitas : counter.getCount()
+
+		// Buscar comentarios
+		models.Comment.findAll({
+			where : {
+				postId : req.post.id
+			},
+			order : 'updatedAt DESC',
+			include : [{
+				model : models.User,
+				as : 'Author'
+			}]
+		}).success(function(comments) {
+			var new_comment = model.Comment.build({
+				body : 'Introduzca el texto del comentario'
+			});
+
+			switch (format) {
+				case "html":
+				case "htm":
+					res.render('posts/show', {
+						post : req.post, // post a mostrar
+						comments : comments, // comentarios al post
+						comment : new_comment, // para editor de comentarios
+						visitas : counter.getCount()
+					});
+					break;
+				case "json":
+					res.send(posts);
+					break;
+				case "xml":
+					res.send(posts_to_xml(posts));
+					break;
+				default:
+					console.log("No se soporta el formato \"." + format + "\".");
+					res.send(406);
+			};
+		}).error(function(error) {
+			next(error);
 		});
 	}).error(function(error) {
 		next(error);
@@ -146,16 +181,26 @@ exports.update = function(req, res, next) {
 
 // DELETE /posts/33
 exports.destroy = function(req, res, next) {
-	console.log("ENTRANDO UNO!");
-	req.post.destroy().success(function() {
-		console.log("ENTRANDO DOS!");
-		req.flash('success', 'Post eliminado con éxito.');
-		res.redirect("/posts");
+	var Sequelize = require('sequelize');
+	var chainer = new Sequelize.Utils.QueryChainer
+	// Obtener los comentarios
+	req.post.getComments().success(function(comments) {
+		for (var i in comments) {
+			// Eliminar un comentario
+			chainer.add(comments[i].destroy());
+		}
+		// Eliminar el post
+		chainer.add(req.post.destroy());
+		// Ejecutar el chainer
+		chainer.run().success(function() {
+			req.flash('success', 'Post (y sus comentarios) eliminado con éxito.');
+			res.redirect('/posts');
+		}).error(function(errors) {
+			next(errors[0]);
+		})
 	}).error(function(error) {
-		console.log("ENTRANDO TRES!");
 		next(error);
 	});
-	console.log("ENTRANDO CUATRo!");
 };
 
 function posts_to_xml(posts) {

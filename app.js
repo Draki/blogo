@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js');
+var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js'), commentController = require('./routes/comment_controller.js');
 
 var app = express();
 
@@ -21,8 +21,8 @@ app.configure(function() {
 	app.use(express.cookieParser('your secret here'));
 	app.use(express.session());
 	app.use(require('connect-flash')());
-	app.use(sessionController.sessionTimeout);	
-	
+	app.use(sessionController.sessionTimeout);
+
 	//Helper dinamico
 	app.use(function(req, res, next) {
 		// Hacer visible req.flash() en las vistas
@@ -34,7 +34,6 @@ app.configure(function() {
 		next();
 	});
 
-		
 	app.use(express.static(path.join(__dirname, 'public')));
 	app.use(app.router);
 
@@ -66,6 +65,8 @@ app.locals.escapeText = function(text) {
 
 // Autoload
 app.param('postid', postController.load);
+app.param('userid', userController.load);
+app.param('commentid', commentController.load);
 
 // Routes
 app.get('/', routes.index);
@@ -91,6 +92,21 @@ app.delete ('/users/:userid([0-9]+)', sessionController.requiresLogin, userContr
 app.get('/login', sessionController.new);
 app.post('/login', sessionController.create);
 app.get('/logout', sessionController.destroy);
+
+// GET posts/3/comments
+app.get('/posts/:postid([0-9]+)/comments', commentController.index);
+// GET posts/3/comments/new
+app.get('/posts/:postid([0-9]+)/comments/new', sessionController.requiresLogin, commentController.new);
+// GET posts/3/comments/2
+app.get('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', commentController.show);
+// POST posts/3/comments
+app.post('/posts/:postid([0-9]+)/comments', sessionController.requiresLogin, commentController.create);
+// GET posts/3/comments/2/edit
+app.get('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)/edit', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.edit);
+// PUT posts/3/comments/2
+app.put('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.update);
+// DELETE posts/3/comments/2
+app.delete('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.destroy);
 
 http.createServer(app).listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));
