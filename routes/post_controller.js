@@ -55,6 +55,8 @@ exports.index = function(req, res, next) {
 
 // GET /posts/33
 exports.show = function(req, res, next) {
+		var format = req.params.format || "html";
+	format = format.toLowerCase();
 	models.User.find({
 		where : {
 			id : req.post.authorId
