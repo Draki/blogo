@@ -33,7 +33,8 @@ exports.index = function(req, res, next) {
 	}).success(function(attachments) {
 		res.render('attachments/index', {
 			attachments : attachments,
-			post : req.post
+			post : req.post,
+					visitas : counter.getCount()
 		});
 	}).error(function(error) {
 		next(error);
@@ -43,7 +44,8 @@ exports.index = function(req, res, next) {
 // GET /posts/33/attachments/new
 exports.new = function(req, res, next) {
 	res.render('attachments/new', {
-		post : req.post
+		post : req.post,
+					visitas : counter.getCount()
 	});
 };
 
