@@ -65,27 +65,33 @@ exports.create = function(req, res, next) {
 		return;
 	}
 	var out_stream = cloudinary.uploader.upload_stream(function(result) {
-	fs.unlink(upfile.path); // borrar fichero subido
-	if (! result.error) {
-	var attachment = models.Attachment.build({
-	public_id: result.public_id,
-	url: result.url,
-	filename: upfile.name,
-	mime: upfile.type,
-	postId: req.post.id
+		fs.unlink(upfile.path);
+		// borrar fichero subido
+
+		if (!result.error) {
+			var attachment = models.Attachment.build({
+				public_id : result.public_id,
+				url : result.url,
+				filename : upfile.name,
+				mime : upfile.type,
+				postId : req.post.id
+			});
+			attachment.save()// guarda campos en la tabla
+			.success(function() {
+				req.flash('success', 'Adjunto subido con éxito.');
+				res.redirect('/posts/' + req.post.id);
+			}).error(function(error) {
+				next(error);
+			});
+		} else {
+			req.flash('error', result.error.message);
+			res.redirect('/posts/' + req.post.id);
+		}
+	}, {
+		resource_type : 'raw',
+		format : path.extname(upfile.name).replace('.', '')
 	});
-	attachment.save() // guarda campos en la tabla
-	.success(function() {
-	req.flash('success', 'Adjunto subido con éxito.');
-	res.redirect('/posts/' + req.post.id );
-	})
-	.error(function(error) {next(error);});
-	} else {
-	req.flash('error', result.error.message);
-	res.redirect('/posts/' + req.post.id );
-	}
-	}, {resource_type: 'raw',
-	format: path.extname(upfile.name).replace('.',''));
+
 	fs.createReadStream(req.files.adjunto.path, {
 		encoding : 'binary'
 	}).on('data', function(data) {
@@ -111,4 +117,4 @@ exports.destroy = function(req, res, next) {
 	}).error(function(error) {
 		next(error);
 	});
-}; 
+};
