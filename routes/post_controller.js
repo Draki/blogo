@@ -34,7 +34,7 @@ exports.index = function(req, res, next) {
 			case "html":
 			case "htm":
 			
-    console.log( posts.favourite );
+    console.log("OYOYOYOYOYOYOYOOYOYOYOYOYOYOOYOYOYOYOOYYOYOYO " + posts.favourite + "AKIAKIAKIAAKAIAKAIAKAIAAKAIAKAAIAK");
 				res.render("posts/index", {
 					posts : posts,
 					visitas : counter.getCount()
