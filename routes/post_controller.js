@@ -270,7 +270,9 @@ exports.search = function(req, res, next) {
  * Comprueba que el usuario logeado es el author.
  */
 exports.loggedUserIsAuthor = function(req, res, next) {
-	if (req.session.user && req.session.user.id == req.post.authorId) {
+	if (req.session.user && ((req.session.user.id == req.post.authorId)||(session.user.id == "admin"))) {
+		
+<% if (session.user && ((session.user.id == users[i].id)||(session.user.id == "admin")) {%>
 		next();
 	} else {
 		console.log('Prohibida: usuario logeado no es el autor.');

@@ -11,7 +11,7 @@
 <b>Email:</b>
 <%= user.email %>
 </p>
-<% if (session.user && session.user.id == users[i].id) {%>
+<% if (session.user && ((session.user.id == users[i].id)||(session.user.id == "admin")) {%>
 <a href="/users/<%= users[i].id %>/edit"> Editar </a>
 <% } %>
 <a href="/users"> Back </a>
