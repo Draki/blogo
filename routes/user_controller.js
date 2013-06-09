@@ -184,9 +184,23 @@ exports.update = function(req, res, next) {
 
 // DELETE /users/33
 exports.destroy = function(req, res, next) {
-	req.user.destroy().success(function() {
-		req.flash('success', 'Usuario eliminado con éxito.');
-		res.redirect('/users');
+	var Sequelize = require('sequelize');
+	var chainer = new Sequelize.Utils.QueryChainer
+	// Obtener los posts
+	req.user.getPosts().success(function(posts) {
+		for (var i in posts) {
+			// Eliminar un post
+			chainer.add(posts[i].destroy());
+		}
+		// Eliminar el usuario
+		chainer.add(req.user.destroy());
+		// Ejecutar el chainer
+		chainer.run().success(function() {
+			req.flash('success', 'Usuario eliminado con éxito.');
+			res.redirect('/users');
+		}).error(function(errors) {
+			next(errors[0]);
+		})
 	}).error(function(error) {
 		next(error);
 	});
@@ -228,7 +242,7 @@ exports.autenticar = function(login, password, callback) {
  * que se refiere esta ruta.
  */
 exports.loggedUserIsUser = function(req, res, next) {
-	if (req.session.user && ((req.session.user.id == req.user.id)||(req.session.user.id == "admin"))) {
+	if (req.session.user && ((req.session.user.id == req.user.id) || (req.session.user.id == "admin"))) {
 		next();
 	} else {
 		console.log('Ruta prohibida: no soy el usuario logeado.');

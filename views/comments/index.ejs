@@ -14,7 +14,7 @@
 		<%- escapeText(comments[i].body) %>
 	</p>
 	<footer>
-		<% if (session.user && ((session.user.id == post.authorId)||(session.user.id == "admin")) {%>
+		<% if (session.user && ((session.user.id == comment.authorId)||(session.user.id == "admin"))) {%>
 		<form method='post' action='/posts/<%= post.id %>/comments/<%= comments[i].id %>'>
 			<input type='hidden' name='_method' value='delete'>
 			<a href="/posts/<%= post.id %>/comments/<%= comments[i].id %>/edit"> Editar </a>

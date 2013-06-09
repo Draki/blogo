@@ -55,7 +55,7 @@ exports.index = function(req, res, next) {
 
 // GET /posts/33
 exports.show = function(req, res, next) {
-		var format = req.params.format || "html";
+	var format = req.params.format || "html";
 	format = format.toLowerCase();
 	models.User.find({
 		where : {
@@ -270,7 +270,7 @@ exports.search = function(req, res, next) {
  * Comprueba que el usuario logeado es el author.
  */
 exports.loggedUserIsAuthor = function(req, res, next) {
-	if (req.session.user && ((req.session.user.id == req.post.authorId)||(session.user.id == "admin"))) {
+	if (req.session.user && ((req.session.user.id == req.post.authorId) || (session.user.id == "admin"))) {
 		next();
 	} else {
 		console.log('Prohibida: usuario logeado no es el autor.');
