@@ -2,6 +2,8 @@ var models = require('../models/models.js');
 var cloudinary = require('cloudinary');
 var fs = require('fs');
 var path = require('path');
+var counter = require("./count");
+
 /*
  * Auto-loading con app.param
  */
