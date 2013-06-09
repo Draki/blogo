@@ -105,7 +105,7 @@ exports.edit = function(req, res, next) {
 
 // POST /posts/33/comments
 exports.create = function(req, res, next) {
-	var comment = model.Comment.build({
+	var comment = models.Comment.build({
 		body : req.body.comment.body,
 		authorId : req.session.user.id,
 		postId : req.post.id
