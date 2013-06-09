@@ -4,7 +4,19 @@
 <% for (var i in posts) { %>
 <article>
 	<header>
-		<h3><a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a></h3>
+		<h3><a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a>
+			<% if (session.user) { %>
+				<form method="post" action="/users/<%= session.user.id %>/favourites/<%= posts[i].id %>">
+				<% if (post.favourites.userId == session.user.id) { %>
+			     	<input type="hidden" name="_method" value="delete" />
+			     	<input type='image' onclick="submit();return false" src='/img/favourite.jpg'/>
+			    <% } else { %>
+			     	<input type="hidden" name="_method" value="put" />
+			     	<input type='image' onclick="submit();return false" src='/img/unfavourite.jpg'/>
+			    <% } %> 
+				</form>
+			<% } %>
+		</h3>
 		<em> <%= posts[i].author && posts[i].author.name || 'Sin autor' %> </em>
 	</header>
 	<p>

@@ -28,7 +28,7 @@ exports.index = function(req, res, next) {
 		include : [{
 			model : models.User,
 			as : 'Author'
-		}]
+		}, models.Favourite]
 	}).success(function(posts) {
 		switch (format) {
 			case "html":
@@ -60,7 +60,8 @@ exports.show = function(req, res, next) {
 	models.User.find({
 		where : {
 			id : req.post.authorId
-		}
+		},
+		include : [models.Favourite]
 	}).success(function(user) {
 		// Si encuentro al autor lo añado como el atributo author, sino añado {}.
 		req.post.author = user || {};

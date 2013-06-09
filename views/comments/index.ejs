@@ -18,7 +18,9 @@
 		<form method='post' action='/posts/<%= post.id %>/comments/<%= comments[i].id %>'>
 			<input type='hidden' name='_method' value='delete'>
 			<a href="/posts/<%= post.id %>/comments/<%= comments[i].id %>/edit"> Editar </a>
-			<a href="" onclick="submit();return false"> Borrar </a>
+			<button type='submit' class='btn btn-success'>
+				Borrar
+			</button>
 		</form>
 		<% } %>
 	</footer>

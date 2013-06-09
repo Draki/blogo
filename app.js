@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js'), commentController = require('./routes/comment_controller.js'), attachmentController = require('./routes/attachment_controller.js');
+var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js'), commentController = require('./routes/comment_controller.js'), attachmentController = require('./routes/attachment_controller.js'), favouriteController = require('./routes/favourite_controller.js');
 
 var app = express();
 
@@ -107,6 +107,11 @@ app.post('/posts/:postid([0-9]+)/comments', sessionController.requiresLogin, com
 app.get('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)/edit', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.edit);
 app.put('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.update);
 app.delete ('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.destroy);
+
+// attachments
+app.get('/users/:userid/favourites', sessionController.requiresLogin, favouriteController.index);
+app.put('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.create);
+app.delete('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.destroy);
 
 // attachments
 app.get('/posts/:postid([0-9]+)/attachments', attachmentController.index);
