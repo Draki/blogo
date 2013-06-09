@@ -11,7 +11,7 @@
 		<%= posts[i].body.slice(0,300) %> ...
 	</p>
 	<footer>
-		<% if (session.user && ((session.user.id == users[i].id)||(session.user.id == "admin"))) {%>
+		<% if (session.user && ((session.user.id == post.authorId)||(session.user.id == "admin"))) {%>
 		<form method="post" action="/posts/<%= posts[i].id %>">
 			<input type="hidden" name="_method" value="delete">
 			<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
