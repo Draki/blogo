@@ -109,15 +109,15 @@ app.put('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.
 app.delete ('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.destroy);
 
 // attachments
-app.get('/users/:userid/favourites', sessionController.requiresLogin, favouriteController.index);
-app.put('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.create);
-app.delete('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.destroy);
-
-// attachments
 app.get('/posts/:postid([0-9]+)/attachments', attachmentController.index);
 app.get('/posts/:postid([0-9]+)/attachments/new', sessionController.requiresLogin, postController.loggedUserIsAuthor, attachmentController.new);
 app.post('/posts/:postid([0-9]+)/attachments', sessionController.requiresLogin, postController.loggedUserIsAuthor, attachmentController.create);
 app.delete ('/posts/:postid([0-9]+)/attachments/:attachmentid([0-9]+)', sessionController.requiresLogin, postController.loggedUserIsAuthor, attachmentController.destroy);
+
+// favourites
+app.get('/users/:userid/favourites', sessionController.requiresLogin, favouriteController.index);
+app.put('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.create);
+app.delete('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.destroy);
 
 
 http.createServer(app).listen(app.get('port'), function() {

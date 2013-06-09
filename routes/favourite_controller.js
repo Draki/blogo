@@ -35,7 +35,7 @@ exports.index = function(req, res, next) {
 exports.create = function(req, res, next) {
 	var favourite = models.Favourite.build({
 		userId : req.session.user.id,
-		postId : req.params.postId
+		postId : req.params.postid
 	});
 	favourite.save().success(function() {
 		req.flash('success', 'Post marcado como favorito.');
@@ -50,7 +50,7 @@ exports.destroy = function(req, res, next) {
 	models.Favourite.find({
 		where : {
 			userId : req.session.user.id,
-			postId : req.params.postId
+			postId : req.params.postid
 		}
 	}).success(function(favourite) {
 		favourite.destroy();
