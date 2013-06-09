@@ -75,7 +75,7 @@ exports.show = function(req, res, next) {
 				as : 'Author'
 			}]
 		}).success(function(comments) {
-			var new_comment = model.Comment.build({
+			var new_comment = models.Comment.build({
 				body : 'Introduzca el texto del comentario'
 			});
 
