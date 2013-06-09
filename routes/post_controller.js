@@ -33,6 +33,8 @@ exports.index = function(req, res, next) {
 		switch (format) {
 			case "html":
 			case "htm":
+			
+    console.log( "Errores de validación:", validate_errors );
 				res.render("posts/index", {
 					posts : posts,
 					visitas : counter.getCount()
@@ -98,10 +100,10 @@ exports.show = function(req, res, next) {
 						});
 						break;
 					case "json":
-						res.send(posts);
+						res.send(post);
 						break;
 					case "xml":
-						res.send(posts_to_xml(posts));
+						res.send(post_to_xml(post));
 						break;
 					default:
 						console.log("No se soporta el formato \"." + format + "\".");
