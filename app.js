@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js'), commentController = require('./routes/comment_controller.js');
+var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js'), commentController = require('./routes/comment_controller.js'), attachmentController = require('./routes/attachment_controller.js');
 
 var app = express();
 
@@ -67,10 +67,14 @@ app.locals.escapeText = function(text) {
 app.param('postid', postController.load);
 app.param('userid', userController.load);
 app.param('commentid', commentController.load);
+app.param('attachmentid', attachmentController.load);
 
 // Routes
+
+// general
 app.get('/', routes.index);
 
+// posts
 app.get('/posts.:format?', postController.index);
 app.get('/posts/new', sessionController.requiresLogin, postController.new);
 app.get('/posts/:postid([0-9]+).:format?', postController.show);
@@ -80,6 +84,7 @@ app.put('/posts/:postid([0-9]+)', sessionController.requiresLogin, postControlle
 app.delete ('/posts/:postid([0-9]+)', sessionController.requiresLogin, postController.loggedUserIsAuthor, postController.destroy);
 app.get('/posts/search', postController.search);
 
+// users
 app.param('userid', userController.load);
 app.get('/users', userController.index);
 app.get('/users/new', userController.new);
@@ -89,24 +94,26 @@ app.get('/users/:userid([0-9]+)/edit', sessionController.requiresLogin, userCont
 app.put('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.loggedUserIsUser, userController.update);
 app.delete ('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.destroy);
 
+// sessions
 app.get('/login', sessionController.new);
 app.post('/login', sessionController.create);
 app.get('/logout', sessionController.destroy);
 
-// GET posts/3/comments
+// comments
 app.get('/posts/:postid([0-9]+)/comments', commentController.index);
-// GET posts/3/comments/new
 app.get('/posts/:postid([0-9]+)/comments/new', sessionController.requiresLogin, commentController.new);
-// GET posts/3/comments/2
 app.get('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', commentController.show);
-// POST posts/3/comments
 app.post('/posts/:postid([0-9]+)/comments', sessionController.requiresLogin, commentController.create);
-// GET posts/3/comments/2/edit
 app.get('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)/edit', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.edit);
-// PUT posts/3/comments/2
 app.put('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.update);
-// DELETE posts/3/comments/2
-app.delete('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.destroy);
+app.delete ('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', sessionController.requiresLogin, commentController.loggedUserIsAuthor, commentController.destroy);
+
+// attachments
+app.get('/posts/:postid([0-9]+)/attachments', attachmentController.index);
+app.get('/posts/:postid([0-9]+)/attachments/new', sessionController.requiresLogin, postController.loggedUserIsAuthor, attachmentController.new);
+app.post('/posts/:postid([0-9]+)/attachments', sessionController.requiresLogin, postController.loggedUserIsAuthor, attachmentController.create);
+app.delete ('/posts/:postid([0-9]+)/attachments/:attachmentid([0-9]+)', sessionController.requiresLogin, postController.loggedUserIsAuthor, attachmentController.destroy);
+
 
 http.createServer(app).listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));

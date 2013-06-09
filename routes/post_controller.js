@@ -62,45 +62,53 @@ exports.show = function(req, res, next) {
 			id : req.post.authorId
 		}
 	}).success(function(user) {
-		// Si encuentro al autor lo añado como el atributo author,
-		// sino añado {}.
+		// Si encuentro al autor lo añado como el atributo author, sino añado {}.
 		req.post.author = user || {};
 
-		// Buscar comentarios
-		models.Comment.findAll({
-			where : {
-				postId : req.post.id
-			},
-			order : 'updatedAt DESC',
-			include : [{
-				model : models.User,
-				as : 'Author'
-			}]
-		}).success(function(comments) {
-			var new_comment = models.Comment.build({
-				body : 'Introduzca el texto del comentario'
-			});
+		// Buscar Adjuntos
+		req.post.getAttachments({
+			order : 'updatedAt DESC'
+		}).success(function(attachments) {
 
-			switch (format) {
-				case "html":
-				case "htm":
-					res.render('posts/show', {
-						post : req.post, // post a mostrar
-						comments : comments, // comentarios al post
-						comment : new_comment, // para editor de comentarios
-						visitas : counter.getCount()
-					});
-					break;
-				case "json":
-					res.send(posts);
-					break;
-				case "xml":
-					res.send(posts_to_xml(posts));
-					break;
-				default:
-					console.log("No se soporta el formato \"." + format + "\".");
-					res.send(406);
-			};
+			// Buscar comentarios
+			models.Comment.findAll({
+				where : {
+					postId : req.post.id
+				},
+				order : 'updatedAt DESC',
+				include : [{
+					model : models.User,
+					as : 'Author'
+				}]
+			}).success(function(comments) {
+				var new_comment = models.Comment.build({
+					body : 'Introduzca el texto del comentario'
+				});
+
+				switch (format) {
+					case "html":
+					case "htm":
+						res.render('posts/show', {
+							post : req.post, // post a mostrar
+							comments : comments, // comentarios al post
+							comment : new_comment, // para editor de comentarios
+							visitas : counter.getCount(),
+							attachments : attachments // Objeto attachements
+						});
+						break;
+					case "json":
+						res.send(posts);
+						break;
+					case "xml":
+						res.send(posts_to_xml(posts));
+						break;
+					default:
+						console.log("No se soporta el formato \"." + format + "\".");
+						res.send(406);
+				};
+			}).error(function(error) {
+				next(error);
+			});
 		}).error(function(error) {
 			next(error);
 		});
@@ -191,15 +199,29 @@ exports.destroy = function(req, res, next) {
 			// Eliminar un comentario
 			chainer.add(comments[i].destroy());
 		}
-		// Eliminar el post
-		chainer.add(req.post.destroy());
-		// Ejecutar el chainer
-		chainer.run().success(function() {
-			req.flash('success', 'Post (y sus comentarios) eliminado con éxito.');
-			res.redirect('/posts');
-		}).error(function(errors) {
-			next(errors[0]);
-		})
+		req.post.getAttachments()// Obtener los adjuntos
+		.success(function(attachments) {
+			for (var i in attachments) {
+				chainer.add(attachments[i].destroy());
+				// Eliminar un adjunto
+				// Borrar el fichero en Cloudinary.
+				cloudinary.api.delete_resources(attachments[i].public_id, function(result) {
+				}, {
+					resource_type : 'raw'
+				});
+			}
+			// Eliminar el post
+			chainer.add(req.post.destroy());
+			// Ejecutar el chainer
+			chainer.run().success(function() {
+				req.flash('success', 'Post (y sus comentarios) eliminado con éxito.');
+				res.redirect('/posts');
+			}).error(function(errors) {
+				next(errors[0]);
+			})
+		}).error(function(error) {
+			next(error);
+		});
 	}).error(function(error) {
 		next(error);
 	});

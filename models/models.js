@@ -18,6 +18,7 @@ var sequelize = new Sequelize(
 var Post = sequelize.import(path.join(__dirname,'post'));
 var User = sequelize.import(path.join(__dirname,'user'));
 var Comment = sequelize.import(path.join(__dirname,'comment'));
+var Attachment = sequelize.import(path.join(__dirname,'attachment'));
 // La llamada User.hasMany(Post);
 // - crea un atributo llamado UserId en el modelo de Post
 // - y en el prototipo de User se crean los metodos getPosts, setPosts,
@@ -28,6 +29,7 @@ var Comment = sequelize.import(path.join(__dirname,'comment'));
 User.hasMany(Post, {foreignKey: 'authorId'});
 User.hasMany(Comment, {foreignKey: 'authorId'});
 Post.hasMany(Comment, {foreignKey: 'postId'});
+Post.hasMany(Attachment, {foreignKey: 'postId'});
 // La llamada Post.belongsTo(User);
 // - crea en el modelo de Post un atributo llamado UserId,
 // - y en el prototipo de Post se crean los metodos getUser y setUser.
@@ -39,11 +41,13 @@ Post.hasMany(Comment, {foreignKey: 'postId'});
 Post.belongsTo(User, {as: 'Author', foreignKey: 'authorId'});
 Comment.belongsTo(User, {as: 'Author', foreignKey: 'authorId'});
 Comment.belongsTo(Post, {foreignKey: 'postId'});
+Attachment.belongsTo(Post, {foreignKey: 'postId'});
 
 // Exportar los modelos:
 exports.Post = Post;
 exports.User = User;
 exports.Comment = Comment;
+exports.Attachment = Attachment;
 
 sequelize.sync();
 // Sincroniza BD con la definición del modelo

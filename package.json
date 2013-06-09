@@ -13,7 +13,8 @@
 		"pg": "0.6.x",
 		"xmlbuilder": "0.4.2",
 		"connect-flash": "*",
-		"connect-flash": ""
+		"connect-flash": "",
+		"cloudinary": ""
 	},
 	"devDependencies": {
 		"sqlite3": ">=2.0.0"
