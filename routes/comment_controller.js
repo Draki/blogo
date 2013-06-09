@@ -1,5 +1,6 @@
 var models = require('../models/models.js');
 var userController = require('./user_controller');
+var counter = require("./count");
 /*
  * Auto-loading con app.param
  */
