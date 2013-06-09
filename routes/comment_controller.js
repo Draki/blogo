@@ -46,7 +46,8 @@ exports.index = function(req, res, next) {
 	}).success(function(comments) {
 		res.render('comments/index', {
 			comments : comments,
-			post : req.post
+			post : req.post,
+			visitas : counter.getCount()
 		});
 	}).error(function(error) {
 		next(error);
@@ -75,7 +76,8 @@ exports.show = function(req, res, next) {
 			req.comment.author = user || {};
 			res.render('comments/show', {
 				comment : req.comment,
-				post : req.post
+				post : req.post,
+				visitas : counter.getCount()
 			});
 		}).error(function(error) {
 			next(error);
@@ -92,14 +94,16 @@ exports.new = function(req, res, next) {
 	});
 	res.render('comments/new', {
 		comment : comment,
-		post : req.post
+		post : req.post,
+		visitas : counter.getCount()
 	});
 };
 // GET /posts/33/comments/66/edit
 exports.edit = function(req, res, next) {
 	res.render('comments/edit', {
 		comment : req.comment,
-		post : req.post
+		post : req.post,
+		visitas : counter.getCount()
 	});
 };
 
@@ -120,7 +124,8 @@ exports.create = function(req, res, next) {
 		res.render('comments/new', {
 			comment : comment,
 			post : req.post,
-			validate_errors : validate_errors
+			validate_errors : validate_errors,
+			visitas : counter.getCount()
 		});
 		return;
 	}
@@ -145,7 +150,8 @@ exports.update = function(req, res, next) {
 		res.render('comments/edit', {
 			comment : req.comment,
 			post : req.post,
-			validate_errors : validate_errors
+			validate_errors : validate_errors,
+			visitas : counter.getCount()
 		});
 		return;
 	}
