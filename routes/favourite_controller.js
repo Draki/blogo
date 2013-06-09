@@ -60,24 +60,3 @@ exports.destroy = function(req, res, next) {
 		next(error);
 	});
 }
-
-// Carga el html apropiado
-exports.favouriteChecker = function(userId, postId) {
-	models.Favourite.findAll({
-		where : {
-			userId : userId,
-			postId : postId
-		}
-	}).success(function(favourites) {
-		if (favourites.length)
-			return {
-				method : "delete",
-				image : '/img/favorite.png'
-			};
-		else
-			return {
-				method : "put",
-				image : '/img/unfavourite.png'
-			};
-	});
-}
