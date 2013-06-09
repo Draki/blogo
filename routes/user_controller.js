@@ -242,7 +242,7 @@ exports.autenticar = function(login, password, callback) {
  * que se refiere esta ruta.
  */
 exports.loggedUserIsUser = function(req, res, next) {
-	if (req.session.user && ((req.session.user.id == req.user.id) || (req.session.user.id == "admin"))) {
+	if (req.session.user && ((req.session.user.id == req.user.id) || (req.session.user.login == "admin"))) {
 		next();
 	} else {
 		console.log('Ruta prohibida: no soy el usuario logeado.');
