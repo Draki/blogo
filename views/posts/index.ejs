@@ -16,6 +16,8 @@
 			    <% } %> 
 				</form>
 			<% } %>
+			<br />
+			<%- posts[i].favourites.userId %>
 		</h3>
 		<em> <%= posts[i].author && posts[i].author.name || 'Sin autor' %> </em>
 	</header>
