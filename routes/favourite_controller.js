@@ -39,7 +39,7 @@ exports.create = function(req, res, next) {
 	});
 	favourite.save().success(function() {
 		req.flash('success', 'Post marcado como favorito.');
-		res.redirect('/posts/' + req.params.postId);
+		res.redirect('/posts/' + req.post.id);
 	}).error(function(error) {
 		next(error);
 	});
@@ -55,7 +55,7 @@ exports.destroy = function(req, res, next) {
 	}).success(function(favourite) {
 		favourite.destroy();
 		req.flash('success', 'Post marcado como NO favorito');
-		res.redirect('/posts/' + req.params.postId);
+		res.redirect('/posts/' + req.post.id);
 	}).error(function(error) {
 		next(error);
 	});
