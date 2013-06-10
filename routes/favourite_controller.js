@@ -8,18 +8,29 @@ exports.index = function(req, res, next) {
 	models.Favourite.findAll({
 		where : {
 			userId : req.session.user.id
-		},
-		offset: req.pagination.offset,
-		limit: req.pagination.limit,
-		order : "updatedAt DESC",
-		include : [{
-			model : models.User,
-			as : 'Author'
-		}, models.Favourite]
-	}).success(function(posts) {
-		models.Favourite.findAll({
-			order : 'updatedAt DESC'
-		}).success(function(favourites) {
+		}
+	}).success(function(favourites) {
+		// generar array con postIds de los post favoritos
+		var postIds = favourites.map(function(favourite) {
+			return favourite.postId;
+		});
+
+		// busca los posts identificados por array postIds
+		var patch;
+		if (postIds.length == 0) {
+			patch = '"Posts"."id" in (NULL)';
+		} else {
+			patch = '"Posts"."id" in (' + postIds.join(',') + ')';
+		}
+		// busca los posts identificados por array postIds
+		models.Post.findAll({
+			order : 'updatedAt DESC',
+			where : patch,
+			include : [{
+				model : models.User,
+				as : 'Author'
+			}, models.Comment, models.Favourite]
+		}).success(function(posts) {
 
 			switch (format) {
 				case "html":
