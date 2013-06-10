@@ -30,25 +30,55 @@ exports.index = function(req, res, next) {
 			as : 'Author'
 		}, models.Favourite]
 	}).success(function(posts) {
-		switch (format) {
-			case "html":
-			case "htm":
-			
-    console.log("OYOYOYOYOYOYOYOOYOYOYOYOYOYOOYOYOYOYOOYYOYOYO " + posts + " AKIAKIAKIAAKAIAKAIAKAIAAKAIAKAAIAK");
-				res.render("posts/index", {
-					posts : posts,
-					visitas : counter.getCount()
-				});
-				break;
-			case "json":
-				res.send(posts);
-				break;
-			case "xml":
-				res.send(posts_to_xml(posts));
-				break;
-			default:
-				console.log("No se soporta el formato \"." + format + "\".");
-				res.send(406);
+		if (session.user) {
+			models.Favourite.findAll({
+				where : {
+					userId : session.user.id
+				},
+				order : 'updatedAt DESC'
+			}).success(function(favourites) {
+
+				switch (format) {
+					case "html":
+					case "htm":
+						res.render("posts/index", {
+							posts : posts,
+							visitas : counter.getCount(),
+							favourites : favourites
+						});
+						break;
+					case "json":
+						res.send(posts);
+						break;
+					case "xml":
+						res.send(posts_to_xml(posts));
+						break;
+					default:
+						console.log("No se soporta el formato \"." + format + "\".");
+						res.send(406);
+				}
+			}).error(function(error) {
+				next(error);
+			});
+		} else {
+			switch (format) {
+				case "html":
+				case "htm":
+					res.render("posts/index", {
+						posts : posts,
+						visitas : counter.getCount()
+					});
+					break;
+				case "json":
+					res.send(posts);
+					break;
+				case "xml":
+					res.send(posts_to_xml(posts));
+					break;
+				default:
+					console.log("No se soporta el formato \"." + format + "\".");
+					res.send(406);
+			}
 		}
 	}).error(function(error) {
 		next(error);
@@ -67,48 +97,59 @@ exports.show = function(req, res, next) {
 	}).success(function(user) {
 		// Si encuentro al autor lo añado como el atributo author, sino añado {}.
 		req.post.author = user || {};
+		// Buscar favoritos
+		models.Favourite.findAll({
+			where : {
+				userId : session.user.id,
+				postId : req.post.id
+			}
+		}).success(function(favourite) {
+			
+			// Buscar Adjuntos
+			req.post.getAttachments({
+				order : 'updatedAt DESC'
+			}).success(function(attachments) {
 
-		// Buscar Adjuntos
-		req.post.getAttachments({
-			order : 'updatedAt DESC'
-		}).success(function(attachments) {
+				// Buscar comentarios
+				models.Comment.findAll({
+					where : {
+						postId : req.post.id
+					},
+					order : 'updatedAt DESC',
+					include : [{
+						model : models.User,
+						as : 'Author'
+					}]
+				}).success(function(comments) {
+					var new_comment = models.Comment.build({
+						body : 'Introduzca el texto del comentario'
+					});
 
-			// Buscar comentarios
-			models.Comment.findAll({
-				where : {
-					postId : req.post.id
-				},
-				order : 'updatedAt DESC',
-				include : [{
-					model : models.User,
-					as : 'Author'
-				}]
-			}).success(function(comments) {
-				var new_comment = models.Comment.build({
-					body : 'Introduzca el texto del comentario'
+					switch (format) {
+						case "html":
+						case "htm":
+							res.render('posts/show', {
+								post : req.post, // post a mostrar
+								comments : comments, // comentarios al post
+								comment : new_comment, // para editor de comentarios
+								visitas : counter.getCount(),
+								attachments : attachments, // Objeto attachements
+								favourite : favourite
+							});
+							break;
+						case "json":
+							res.send(post);
+							break;
+						case "xml":
+							res.send(post_to_xml(post));
+							break;
+						default:
+							console.log("No se soporta el formato \"." + format + "\".");
+							res.send(406);
+					};
+				}).error(function(error) {
+					next(error);
 				});
-
-				switch (format) {
-					case "html":
-					case "htm":
-						res.render('posts/show', {
-							post : req.post, // post a mostrar
-							comments : comments, // comentarios al post
-							comment : new_comment, // para editor de comentarios
-							visitas : counter.getCount(),
-							attachments : attachments // Objeto attachements
-						});
-						break;
-					case "json":
-						res.send(post);
-						break;
-					case "xml":
-						res.send(post_to_xml(post));
-						break;
-					default:
-						console.log("No se soporta el formato \"." + format + "\".");
-						res.send(406);
-				};
 			}).error(function(error) {
 				next(error);
 			});

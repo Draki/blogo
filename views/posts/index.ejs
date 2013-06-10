@@ -7,8 +7,15 @@
 		<h3><a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a>
 			<% if (session.user) { %>
 				<form method="post" action="/users/<%= session.user.id %>/favourites/<%= posts[i].id %>">
-				<% if (posts[i].favourite.userId == session.user.id) { %>
-			     	<input type="hidden" name="_method" value="delete" />
+				<% var fav=false;
+				for(var i in favourites){
+            		if (favourites[i].postId==posts[i].id) {
+            			fav = true;
+            			break;
+            		};
+            	};
+            	if(fav){ %>
+				   	<input type="hidden" name="_method" value="delete" />
 			     	<input type='image' onclick="submit();return false" src='/img/favourite.jpg'/>
 			    <% } else { %>
 			     	<input type="hidden" name="_method" value="put" />
