@@ -17,7 +17,7 @@
 				</form>
 			<% } %>
 			<br />
-			<%- posts[i].favourites.userId %>
+			<%= posts[i]..favourites && posts[i].favourites.userId || 'Sin favoritos' %>
 		</h3>
 		<em> <%= posts[i].author && posts[i].author.name || 'Sin autor' %> </em>
 	</header>
