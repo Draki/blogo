@@ -15,10 +15,10 @@
         			break;
         		};
         	};
-        	if(isFavourite){ 
+        	if(isFavourite){ %>
 			   	<input type="hidden" name="_method" value="delete" />
 		     	<input type='image' onclick="submit();return false" src='/img/favourite.jpg' height=90 />
-		    <% } else { 
+		    <% } else { %>
 		     	<input type="hidden" name="_method" value="put" />
 		     	<input type='image' onclick="submit();return false" src='/img/unfavourite.jpg' height=90 />
 		    <% } %> 
