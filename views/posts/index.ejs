@@ -10,8 +10,8 @@
 				<form method="post" action="/users/<%= session.user.id %>/favourites/<%= posts[i].id %>">
 				<% var isFavourite=false;
 				console.log('1' +isFavourite);
-				for(var i in favourites){
-            		if ((favourites[i].postId==posts[i].id) && (favourites[i].userId==session.user.id)) {
+				for(var j in favourites){
+            		if ((favourites[j].postId==posts[j].id) && (favourites[j].userId==session.user.id)) {
             			isFavourite = true;
             			break;
             		};
