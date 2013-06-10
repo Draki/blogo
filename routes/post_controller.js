@@ -100,7 +100,7 @@ exports.show = function(req, res, next) {
 					where : {
 						postId : req.post.id
 					}
-				}).success(function(favourite) {
+				}).success(function(favourites) {
 					switch (format) {
 						case "html":
 						case "htm":
@@ -110,7 +110,7 @@ exports.show = function(req, res, next) {
 								comment : new_comment, // para editor de comentarios
 								visitas : counter.getCount(),
 								attachments : attachments, // Objeto attachements
-								favourite : favourite
+								favourites : favourites
 							});
 							break;
 						case "json":
