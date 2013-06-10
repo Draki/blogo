@@ -115,7 +115,7 @@ app.post('/posts/:postid([0-9]+)/attachments', sessionController.requiresLogin, 
 app.delete ('/posts/:postid([0-9]+)/attachments/:attachmentid([0-9]+)', sessionController.requiresLogin, postController.loggedUserIsAuthor, attachmentController.destroy);
 
 // favourites
-app.get('/users/:userid/favourites.:format?', sessionController.requiresLogin, favouriteController.index);
+app.get('/users/:userid/favourites.:format?', sessionController.requiresLogin, function(req, res, next) {paginate(req, res, next, 'Post');},  favouriteController.index);
 app.put('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.create);
 app.delete('/users/:userid/favourites/:postid', sessionController.requiresLogin, favouriteController.destroy);
 
