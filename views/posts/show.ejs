@@ -4,7 +4,7 @@
 		<b><%= post.title %></b>
 		<% if (session.user) { %>
 				<form method="post" action="/users/<%= session.user.id %>/favourites/<%= post.id %>">
-				<% if (post.favourites.userId == session.user.id) { %>
+				<% if (post.favourites.userid == session.user.id) { %>
 			     	<input type="hidden" name="_method" value="delete" />
 			     	<input type='image' onclick="submit();return false" src='/img/favourite.jpg'/>
 			    <% } else { %>
