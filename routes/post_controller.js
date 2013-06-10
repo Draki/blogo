@@ -219,27 +219,35 @@ exports.destroy = function(req, res, next) {
 		for (var i in comments) {
 			// Eliminar un comentario
 			chainer.add(comments[i].destroy());
-		}
-		req.post.getAttachments()// Obtener los adjuntos
-		.success(function(attachments) {
-			for (var i in attachments) {
-				chainer.add(attachments[i].destroy());
-				// Eliminar un adjunto
-				// Borrar el fichero en Cloudinary.
-				cloudinary.api.delete_resources(attachments[i].public_id, function(result) {
-				}, {
-					resource_type : 'raw'
-				});
-			}
-			// Eliminar el post
-			chainer.add(req.post.destroy());
-			// Ejecutar el chainer
-			chainer.run().success(function() {
-				req.flash('success', 'Post (y sus comentarios) eliminado con éxito.');
-				res.redirect('/posts');
-			}).error(function(errors) {
-				next(errors[0]);
-			})
+		};
+		req.post.getFavourites().success(function(favourites) {
+			for (var i in favourites) {
+				// Eliminar los favoritos asociados a este post
+				chainer.add(favourites[i].destroy());
+			};
+			req.post.getAttachments()// Obtener los adjuntos
+			.success(function(attachments) {
+				for (var i in attachments) {
+					chainer.add(attachments[i].destroy());
+					// Eliminar un adjunto
+					// Borrar el fichero en Cloudinary.
+					cloudinary.api.delete_resources(attachments[i].public_id, function(result) {
+					}, {
+						resource_type : 'raw'
+					});
+				}
+				// Eliminar el post
+				chainer.add(req.post.destroy());
+				// Ejecutar el chainer
+				chainer.run().success(function() {
+					req.flash('success', 'Post (y sus comentarios) eliminado con éxito.');
+					res.redirect('/posts');
+				}).error(function(errors) {
+					next(errors[0]);
+				})
+			}).error(function(error) {
+				next(error);
+			});
 		}).error(function(error) {
 			next(error);
 		});

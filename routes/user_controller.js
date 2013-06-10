@@ -191,16 +191,24 @@ exports.destroy = function(req, res, next) {
 		for (var i in posts) {
 			// Eliminar un post
 			chainer.add(posts[i].destroy());
-		}
-		// Eliminar el usuario
-		chainer.add(req.user.destroy());
-		// Ejecutar el chainer
-		chainer.run().success(function() {
-			req.flash('success', 'Usuario eliminado con éxito.');
-			res.redirect('/users');
-		}).error(function(errors) {
-			next(errors[0]);
-		})
+		};
+		req.user.getFavourites().success(function(favourites) {
+			for (var i in favourites) {
+				// Eliminar los favoritos asociados a este post
+				chainer.add(favourites[i].destroy());
+			};
+			// Eliminar el usuario
+			chainer.add(req.user.destroy());
+			// Ejecutar el chainer
+			chainer.run().success(function() {
+				req.flash('success', 'Usuario eliminado con éxito.');
+				res.redirect('/users');
+			}).error(function(errors) {
+				next(errors[0]);
+			})
+		}).error(function(error) {
+			next(error);
+		});
 	}).error(function(error) {
 		next(error);
 	});
