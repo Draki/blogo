@@ -4,33 +4,35 @@
 <% for (var i in posts) { %>
 <article>
 	<header>
-		<h3><a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a>
-			
-			<% if (session.user) { %>
-				<form method="post" action="/users/<%= session.user.id %>/favourites/<%= posts[i].id %>">
-				<% var isFavourite=false;
-				console.log('1' +isFavourite);
-				for(var j in favourites){
-            		if ((favourites[j].postId==posts[j].id) && (favourites[j].userId==session.user.id)) {
-            			isFavourite = true;
-            			break;
-            		};
-            	};
-				console.log('2' +isFavourite);
-            	if(isFavourite){ 
-            		console.log('entra'); %>
-				   	<input type="hidden" name="_method" value="delete" />
-			     	<input type='image' onclick="submit();return false" src='/img/favourite.jpg' height=90 />
-			    <% } else { 
-            		console.log('NO entra'); %>
-			     	<input type="hidden" name="_method" value="put" />
-			     	<input type='image' onclick="submit();return false" src='/img/unfavourite.jpg' height=90 />
-			    <% } %> 
-				</form>
-			<% } %>
-			<br />
-			<%= posts[i].favourite && posts[i].favourite.userId || 'Sin favoritos' %>
-		</h3>
+		<h3><a href="/posts/<%= posts[i].id %>" class="titlelink"><%= posts[i].title %> </a></h3>
+		
+		<% if (session.user) { %>
+			<form method="post" action="/users/<%= session.user.id %>/favourites/<%= posts[i].id %>">
+			<% var isFavourite=false;
+			var contad=0;
+			console.log('1' +isFavourite);
+			for(var j in favourites){
+				contad++;
+			console.log('contador ' +contad);
+			console.log('3' +isFavourite);
+				
+        		if ((favourites[j].postId==posts[j].id) && (favourites[j].userId==session.user.id)) {
+        			isFavourite = true;
+        			break;
+        		};
+        	};
+			console.log('2' +isFavourite);
+        	if(isFavourite){ 
+        		console.log('entra'); %>
+			   	<input type="hidden" name="_method" value="delete" />
+		     	<input type='image' onclick="submit();return false" src='/img/favourite.jpg' height=90 />
+		    <% } else { 
+        		console.log('NO entra'); %>
+		     	<input type="hidden" name="_method" value="put" />
+		     	<input type='image' onclick="submit();return false" src='/img/unfavourite.jpg' height=90 />
+		    <% } %> 
+			</form>
+		<% } %>
 		<em> <%= posts[i].author && posts[i].author.name || 'Sin autor' %> </em>
 	</header>
 	<p>
