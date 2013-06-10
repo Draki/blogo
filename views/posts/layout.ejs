@@ -61,6 +61,9 @@
 				<a href="/">Home</a>
 				<a href="/posts">Posts</a>
 				<a href="/users">Usuarios</a>
+				<% if (session.user) { %>
+					<a href="app.get('/users/<%= session.user.id %>/favourites"> Favoritos </a>
+				<% } %>
 				<div id="logininfo">
 					<% if (session.user) { %>
 					<%= session.user.name %>
