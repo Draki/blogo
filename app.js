@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js'), commentController = require('./routes/comment_controller.js'), attachmentController = require('./routes/attachment_controller.js'), favouriteController = require('./routes/favourite_controller.js');
+var express = require('express'), routes = require('./routes'), http = require('http'), path = require('path'), partials = require('express-partials'), counter = require('./routes/count'), postController = require('./routes/post_controller.js'), util = require('util'), userController = require('./routes/user_controller.js'), sessionController = require('./routes/session_controller.js'), commentController = require('./routes/comment_controller.js'), attachmentController = require('./routes/attachment_controller.js'), favouriteController = require('./routes/favourite_controller.js'), paginate = require('./routes/paginate.js').paginate;
 
 var app = express();
 
@@ -75,9 +75,9 @@ app.param('attachmentid', attachmentController.load);
 app.get('/', routes.index);
 
 // posts
-app.get('/posts.:format?', postController.index);
+app.get('/posts.:format?', function(req, res, next) { paginate(req, res, next, 'Post'); }, postController.index);
 app.get('/posts/new', sessionController.requiresLogin, postController.new);
-app.get('/posts/:postid([0-9]+).:format?', postController.show);
+app.get('/posts/:postid([0-9]+).:format?', function(req, res, next) {paginate(req, res, next, 'Post');}, postController.show);
 app.post('/posts', sessionController.requiresLogin, postController.create);
 app.get('/posts/:postid([0-9]+)/edit', sessionController.requiresLogin, postController.loggedUserIsAuthor, postController.edit);
 app.put('/posts/:postid([0-9]+)', sessionController.requiresLogin, postController.loggedUserIsAuthor, postController.update);
@@ -86,7 +86,7 @@ app.get('/posts/search', postController.search);
 
 // users
 app.param('userid', userController.load);
-app.get('/users', userController.index);
+app.get('/users', function(req, res, next) {paginate(req, res, next, 'Post');}, userController.index);
 app.get('/users/new', userController.new);
 app.get('/users/:userid([0-9]+)', userController.show);
 app.post('/users', userController.create);

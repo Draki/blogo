@@ -71,6 +71,11 @@
 					<% } %>
 				</div>
 			</nav>
+			<div class="pull-right">
+				<% if (locals.paginate_view) { %>
+				<%- paginate_view %>
+				<% } %>
+			</div>
 
 		</header>
 		<hr />

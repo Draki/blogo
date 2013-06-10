@@ -24,6 +24,8 @@ exports.index = function(req, res, next) {
 	var format = req.params.format || "html";
 	format = format.toLowerCase();
 	models.Post.findAll({
+		offset: req.pagination.offset,
+		limit: req.pagination.limit,
 		order : "updatedAt DESC",
 		include : [{
 			model : models.User,
@@ -82,6 +84,8 @@ exports.show = function(req, res, next) {
 
 			// Buscar comentarios
 			models.Comment.findAll({
+				offset: req.pagination.offset,
+				limit: req.pagination.limit,
 				where : {
 					postId : req.post.id
 				},

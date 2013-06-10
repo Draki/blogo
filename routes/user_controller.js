@@ -30,6 +30,8 @@ exports.load = function(req, res, next, id) {
 // GET /users
 exports.index = function(req, res, next) {
 	models.User.findAll({
+		offset: req.pagination.offset,
+		limit: req.pagination.limit,
 		order : 'name'
 	}).success(function(users) {
 		res.render('users/index', {

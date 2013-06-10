@@ -14,7 +14,8 @@
 		"xmlbuilder": "0.4.2",
 		"connect-flash": "*",
 		"connect-flash": "",
-		"cloudinary": ""
+		"cloudinary": "",
+		"nodejs-yapaginate": ""
 	},
 	"devDependencies": {
 		"sqlite3": ">=2.0.0"
