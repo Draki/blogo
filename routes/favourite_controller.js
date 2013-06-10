@@ -55,7 +55,7 @@ exports.destroy = function(req, res, next) {
 	}).success(function(favourite) {
 		favourite.destroy();
 		req.flash('success', 'Post marcado como NO favorito');
-		res.redirect('/posts/' + req.post.id);
+		res.redirect('/posts/' + req.params.postId);
 	}).error(function(error) {
 		next(error);
 	});
