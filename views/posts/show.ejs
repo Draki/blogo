@@ -4,7 +4,14 @@
 		<b><%= post.title %></b>
 		<% if (session.user) { %>
 			<form method="post" action="/users/<%= session.user.id %>/favourites/<%= posts[i].id %>">
-			<% if (favourite.postId){ %>
+			<% var isFavourite=false;
+				for(var i in favourites){
+            		if (favourites[i].userId==session.user.id) {
+            			isFavourite = true;
+            			break;
+            		};
+            	};
+            	if(isFavourite){ %>
 			   	<input type="hidden" name="_method" value="delete" />
 		     	<input type='image' onclick="submit();return false" src='/img/favourite.jpg'/>
 		    <% } else { %>

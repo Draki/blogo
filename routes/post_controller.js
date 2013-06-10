@@ -30,43 +30,17 @@ exports.index = function(req, res, next) {
 			as : 'Author'
 		}, models.Favourite]
 	}).success(function(posts) {
-		if (session.user) {
-			models.Favourite.findAll({
-				where : {
-					userId : session.user.id
-				},
-				order : 'updatedAt DESC'
-			}).success(function(favourites) {
+		models.Favourite.findAll({
+			order : 'updatedAt DESC'
+		}).success(function(favourites) {
 
-				switch (format) {
-					case "html":
-					case "htm":
-						res.render("posts/index", {
-							posts : posts,
-							visitas : counter.getCount(),
-							favourites : favourites
-						});
-						break;
-					case "json":
-						res.send(posts);
-						break;
-					case "xml":
-						res.send(posts_to_xml(posts));
-						break;
-					default:
-						console.log("No se soporta el formato \"." + format + "\".");
-						res.send(406);
-				}
-			}).error(function(error) {
-				next(error);
-			});
-		} else {
 			switch (format) {
 				case "html":
 				case "htm":
 					res.render("posts/index", {
 						posts : posts,
-						visitas : counter.getCount()
+						visitas : counter.getCount(),
+						favourites : favourites
 					});
 					break;
 				case "json":
@@ -79,7 +53,10 @@ exports.index = function(req, res, next) {
 					console.log("No se soporta el formato \"." + format + "\".");
 					res.send(406);
 			}
-		}
+		}).error(function(error) {
+			next(error);
+		});
+
 	}).error(function(error) {
 		next(error);
 	});
@@ -118,39 +95,12 @@ exports.show = function(req, res, next) {
 					body : 'Introduzca el texto del comentario'
 				});
 				// Buscar favoritos
-				if (session.user) {
-					models.Favourite.findAll({
-						where : {
-							userId : session.user.id,
-							postId : req.post.id
-						}
-					}).success(function(favourite) {
-						switch (format) {
-							case "html":
-							case "htm":
-								res.render('posts/show', {
-									post : req.post, // post a mostrar
-									comments : comments, // comentarios al post
-									comment : new_comment, // para editor de comentarios
-									visitas : counter.getCount(),
-									attachments : attachments, // Objeto attachements
-									favourite : favourite
-								});
-								break;
-							case "json":
-								res.send(post);
-								break;
-							case "xml":
-								res.send(post_to_xml(post));
-								break;
-							default:
-								console.log("No se soporta el formato \"." + format + "\".");
-								res.send(406);
-						};
-					}).error(function(error) {
-						next(error);
-					});
-				} else {
+
+				models.Favourite.findAll({
+					where : {
+						postId : req.post.id
+					}
+				}).success(function(favourite) {
 					switch (format) {
 						case "html":
 						case "htm":
@@ -159,7 +109,8 @@ exports.show = function(req, res, next) {
 								comments : comments, // comentarios al post
 								comment : new_comment, // para editor de comentarios
 								visitas : counter.getCount(),
-								attachments : attachments // Objeto attachements
+								attachments : attachments, // Objeto attachements
+								favourite : favourite
 							});
 							break;
 						case "json":
@@ -172,7 +123,10 @@ exports.show = function(req, res, next) {
 							console.log("No se soporta el formato \"." + format + "\".");
 							res.send(406);
 					};
-				}
+				}).error(function(error) {
+					next(error);
+				});
+
 			}).error(function(error) {
 				next(error);
 			});
