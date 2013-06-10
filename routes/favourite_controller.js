@@ -3,6 +3,8 @@ var counter = require("./count");
 
 // GET /users/:userid/favourites
 exports.index = function(req, res, next) {
+	var format = req.params.format || "html";
+	format = format.toLowerCase();
 	models.Favourite.findAll({
 		where : {
 			userId : req.param.userId
