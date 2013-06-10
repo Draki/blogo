@@ -24,6 +24,8 @@ exports.index = function(req, res, next) {
 		}
 		// busca los posts identificados por array postIds
 		models.Post.findAll({
+			offset : req.pagination.offset,
+			limit : req.pagination.limit,
 			order : 'updatedAt DESC',
 			where : patch,
 			include : [{
