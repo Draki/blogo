@@ -97,34 +97,60 @@ exports.show = function(req, res, next) {
 	}).success(function(user) {
 		// Si encuentro al autor lo añado como el atributo author, sino añado {}.
 		req.post.author = user || {};
-		// Buscar favoritos
-		models.Favourite.findAll({
-			where : {
-				userId : session.user.id,
-				postId : req.post.id
-			}
-		}).success(function(favourite) {
-			
-			// Buscar Adjuntos
-			req.post.getAttachments({
-				order : 'updatedAt DESC'
-			}).success(function(attachments) {
 
-				// Buscar comentarios
-				models.Comment.findAll({
-					where : {
-						postId : req.post.id
-					},
-					order : 'updatedAt DESC',
-					include : [{
-						model : models.User,
-						as : 'Author'
-					}]
-				}).success(function(comments) {
-					var new_comment = models.Comment.build({
-						body : 'Introduzca el texto del comentario'
+		// Buscar Adjuntos
+		req.post.getAttachments({
+			order : 'updatedAt DESC'
+		}).success(function(attachments) {
+
+			// Buscar comentarios
+			models.Comment.findAll({
+				where : {
+					postId : req.post.id
+				},
+				order : 'updatedAt DESC',
+				include : [{
+					model : models.User,
+					as : 'Author'
+				}]
+			}).success(function(comments) {
+				var new_comment = models.Comment.build({
+					body : 'Introduzca el texto del comentario'
+				});
+				// Buscar favoritos
+				if (session.user) {
+					models.Favourite.findAll({
+						where : {
+							userId : session.user.id,
+							postId : req.post.id
+						}
+					}).success(function(favourite) {
+						switch (format) {
+							case "html":
+							case "htm":
+								res.render('posts/show', {
+									post : req.post, // post a mostrar
+									comments : comments, // comentarios al post
+									comment : new_comment, // para editor de comentarios
+									visitas : counter.getCount(),
+									attachments : attachments, // Objeto attachements
+									favourite : favourite
+								});
+								break;
+							case "json":
+								res.send(post);
+								break;
+							case "xml":
+								res.send(post_to_xml(post));
+								break;
+							default:
+								console.log("No se soporta el formato \"." + format + "\".");
+								res.send(406);
+						};
+					}).error(function(error) {
+						next(error);
 					});
-
+				} else {
 					switch (format) {
 						case "html":
 						case "htm":
@@ -133,8 +159,7 @@ exports.show = function(req, res, next) {
 								comments : comments, // comentarios al post
 								comment : new_comment, // para editor de comentarios
 								visitas : counter.getCount(),
-								attachments : attachments, // Objeto attachements
-								favourite : favourite
+								attachments : attachments // Objeto attachements
 							});
 							break;
 						case "json":
@@ -147,9 +172,7 @@ exports.show = function(req, res, next) {
 							console.log("No se soporta el formato \"." + format + "\".");
 							res.send(406);
 					};
-				}).error(function(error) {
-					next(error);
-				});
+				}
 			}).error(function(error) {
 				next(error);
 			});
