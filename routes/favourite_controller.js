@@ -7,7 +7,7 @@ exports.index = function(req, res, next) {
 	format = format.toLowerCase();
 	models.Favourite.findAll({
 		where : {
-			userId : req.param.userId
+			userId : req.session.user.id
 		}
 	}).success(function(posts) {
 		switch (format) {
