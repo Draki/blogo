@@ -22,3 +22,13 @@ article {
         box-shadow: 0px 0px 10px #000000;
         background: #DDDDDD;
 }
+
+.smallarticle {
+	margin: 20px;
+	width: 240px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 0px 10px #000000;
+        background: #DDDDDD;
+}
