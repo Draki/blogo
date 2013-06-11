@@ -38,11 +38,7 @@
 								</li>
 								<% } %>
 							</ul>
-							<form class="navbar-form pull-right" method="GET" action="/posts/search">
-								<input type="text"	name="buscar" size="14">
-								<input type="submit" value="Buscar" class="btn btn-navbar" >
-							</form>
-							<form class="navbar-form pull-right" id='logininfo'>
+														<form class="navbar-form pull-right" id='logininfo'>
 								<% if (session.user) { %>
 								<a href='/logout' class="btn btn-danger">Logout</a>
 								<% } else { %>
@@ -50,6 +46,9 @@
 								<a href='/users/new' class="btn">Register</a>
 								<% } %>
 							</form>
+							<form class="navbar-form pull-right" action="/posts/search" method="post">
+							<input type="text" class="search-query" placeholder="Search" name="query" />
+						</form>
 						</div>
 					</div>
 
