@@ -16,23 +16,32 @@
 	</head>
 	<body>
 		<header>
-			<form method="GET" action="/posts/search">
-				<input type="text"	name="buscar" size="14">
-				<input type="submit" value="Buscar">
-			</form>
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">
 						<a class="brand" href="/">VideoGame Maniac</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<a href="/">Home</a>
-								<a href="/posts">Posts</a>
-								<a href="/users">Usuarios</a>
+								<li>
+									<a href="/">Home</a>
+								</li>
+								<li>
+									<a href="/posts">Posts</a>
+								</li>
+								<li>
+									<a href="/users">Usuarios</a>
+								</li>
+
 								<% if (session.user) { %>
-								<a href="/users/<%= session.user.id %>/favourites"> Favoritos </a>
+								<li>
+									<a href="/users/<%= session.user.id %>/favourites"> Favoritos </a>
+								</li>
 								<% } %>
 							</ul>
+							<form class="navbar-form pull-right" method="GET" action="/posts/search">
+								<input type="text"	name="buscar" size="14">
+								<input type="submit" value="Buscar" class="btn btn-navbar" >
+							</form>
 							<form class="navbar-form pull-right" id='logininfo'>
 								<% if (session.user) { %>
 								<a href='/logout' class="btn btn-danger">Logout</a>
@@ -41,11 +50,6 @@
 								<a href='/users/new' class="btn">Register</a>
 								<% } %>
 							</form>
-							<form class="navbar-form pull-right" action="/posts/search" method="post">
-								<input type="text" class="search-query" placeholder="Search" name="query" />
-							</form>
-
-							
 						</div>
 					</div>
 
@@ -107,9 +111,6 @@
 		<hr />
 
 		<footer>
-			<a href="/">Home</a>
-			Curso 2012-2013
-			<br />
 			contador de visitas: <%= visitas %>
 		</footer>
 	</body>
