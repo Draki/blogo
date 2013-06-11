@@ -5,7 +5,7 @@
 		<link href="/stylesheets/bootstrap.css" type="text/css" rel="stylesheet">
 		<style>
 			body {
-				padding-top: 120px; /* 60px to make the container go all the way to the bottom of the topbar */
+				padding-top: 100px; /* 60px to make the container go all the way to the bottom of the topbar */
 			}
 		</style>
 		<link href="/stylesheets/bootstrap-responsive.css" type="text/css" rel="stylesheet">
@@ -23,9 +23,6 @@
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								<li>
-									<a href="/">Home</a>
-								</li>
-								<li>
 									<a href="/posts">Posts</a>
 								</li>
 								<li>
@@ -38,17 +35,18 @@
 								</li>
 								<% } %>
 							</ul>
-														<form class="navbar-form pull-right" id='logininfo'>
+							<form class="navbar-form pull-right" id='logininfo'>
 								<% if (session.user) { %>
 								<a href='/logout' class="btn btn-danger">Logout</a>
 								<% } else { %>
-								<a href='/login?redir=/users' class="btn btn-success">Login</a>
+								<a href='/login?redir=/' class="btn">Login</a>
 								<a href='/users/new' class="btn">Register</a>
 								<% } %>
 							</form>
+							&nbsp; &nbsp;
 							<form class="navbar-form pull-right" action="/posts/search" method="post">
-							<input type="text" class="search-query" placeholder="Search" name="query" />
-						</form>
+								<input type="text" class="search-query" placeholder="Search" name="query" />
+							</form>
 						</div>
 					</div>
 
