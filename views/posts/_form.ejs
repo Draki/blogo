@@ -3,16 +3,14 @@
 : "field" %>">
 	<label for="post_title">Titulo</label>
 	<br />
-	<input type="text" id="post_title" name="post[title]"
-	size="80" value="<%= post.title%>" />
+	<input type="text" id="post_title" name="post[title]" value="<%= post.title%>" />
 </div>
 <div class="<%- locals.validate_errors && validate_errors.body
 ? "invalid_field"
 : "field" %>">
 	<label for="post_body">Contenido</label>
 	<br />
-	<textarea id="post_body" name="post[body]" rows="20"
-cols="80"><%= post.body %></textarea>
+	<textarea id="post_body" name="post[body]" rows="20"><%= post.body %></textarea>
 </div>
 <div class="actions">
 	<input name="commit" type="submit" value="Salvar" />
