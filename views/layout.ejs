@@ -2,6 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="utf-8">
+		<link href="/stylesheets/style.css" type="text/css" rel="stylesheet">
 		<link href="/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet">
 		<style>
 			body {
@@ -57,48 +58,50 @@
 					</div>
 				</div>
 			</div>
-			<h1>Videogame Maniac</h1>
-			<h2> Reviews de videojuegos</h2>
-			<h3>Álvaro García Albaladejo y Daniel Rodríguez Rodríguez</h3>
-			<section>
-				<% var flash = flash() %>
-				<% if (flash.info) { %>
-				<article id="flashinfo">
-					<h3>Información de interés:</h3>
-					<ul>
-						<% for (var i in flash.info) { %>
-						<li>
-							<%= flash.info[i] %>
-						</li>
-						<% } %>
-					</ul>
-				</article>
-				<% } %>
-				<% if (flash.success) { %>
-				<article id="flashsuccess">
-					<h3>Tareas completadas con éxito:</h3>
-					<ul>
-						<% for (var i in flash.success) { %>
-						<li>
-							<%= flash.success[i] %>
-						</li>
-						<% } %>
-					</ul>
-				</article>
-				<% } %>
-				<% if (flash.error) { %>
-				<article id="flasherror">
-					<h3>Errores encontrados:</h3>
-					<ul>
-						<% for (var i in flash.error) { %>
-						<li>
-							<%= flash.error[i] %>
-						</li>
-						<% } %>
-					</ul>
-				</article>
-				<% } %>
-			</section>
+
+			<div class="container">
+				<h1>Videogame Maniac</h1>
+				<h2> Reviews de videojuegos</h2>
+				<h3>Álvaro García Albaladejo y Daniel Rodríguez Rodríguez</h3>
+				<section>
+					<% var flash = flash() %>
+					<% if (flash.info) { %>
+					<article id="flashinfo">
+						<h3>Información de interés:</h3>
+						<ul>
+							<% for (var i in flash.info) { %>
+							<li>
+								<%= flash.info[i] %>
+							</li>
+							<% } %>
+						</ul>
+					</article>
+					<% } %>
+					<% if (flash.success) { %>
+					<article id="flashsuccess">
+						<h3>Tareas completadas con éxito:</h3>
+						<ul>
+							<% for (var i in flash.success) { %>
+							<li>
+								<%= flash.success[i] %>
+							</li>
+							<% } %>
+						</ul>
+					</article>
+					<% } %>
+					<% if (flash.error) { %>
+					<article id="flasherror">
+						<h3>Errores encontrados:</h3>
+						<ul>
+							<% for (var i in flash.error) { %>
+							<li>
+								<%= flash.error[i] %>
+							</li>
+							<% } %>
+						</ul>
+					</article>
+					<% } %>
+				</section>
 
 		</header>
 		<hr />
@@ -110,5 +113,7 @@
 		<footer>
 			contador de visitas: <%= visitas %>
 		</footer>
+
+		</div>
 	</body>
 </html>
