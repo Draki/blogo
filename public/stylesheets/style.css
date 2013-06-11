@@ -1,43 +1,6 @@
-.mainHeader {
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        background: #333333;
-        padding: 10px;
+.cuerpo {
+	margin-left: 40;
 }
-.search_div {
-        position: relative;
-        float: right;
-        margin-right: 20px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
-        padding: 5px;
-        box-shadow: 0px 0px 5px #000000;
-        background: #222222;
-}
-
-#search_input {
-        border: 0px;
-        background: #303030;
-        height: 40px;
- 	vertical-align: middle;
-        color: #FFFFFF;
-        font-size: 20px;
-        text-align: right;
-}
-
-
-#search_button {
-        background: transparent;
-        background-image: url(../images/search.png);
-        background-repeat: no-repeat;
-        vertical-align: middle;
-        width: 40px;
-        height: 40px;
-        border: 0px;
-}
-
 .content {
         margin-top: 80px;
         margin-bottom: 80px;
@@ -58,9 +21,4 @@ article {
         padding: 20px;
         box-shadow: 0px 0px 10px #000000;
         background: #DDDDDD;
-}
-
-#logininfo {
- float: right;
- clear: both;
 }
