@@ -33,8 +33,8 @@
 		<% if (session.user && ((session.user.id == posts[i].authorId)||(session.user.login == "admin"))) { %>
 		<form method="post" action="/posts/<%= posts[i].id %>">
 			<input type="hidden" name="_method" value="delete">
-			<a href="/posts/<%= posts[i].id %>/edit"> Editar </a>
-			<button type='submit' class='btn btn-success'>
+			<a href="/posts/<%= posts[i].id %>/edit" class='btn'> Editar </a>
+			<button type='submit' class='btn btn-danger'>
 				Borrar
 			</button>
 		</form>
